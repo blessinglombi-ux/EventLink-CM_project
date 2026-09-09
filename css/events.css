@@ -1,0 +1,238 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+
+    background: linear-gradient(
+        135deg,
+        #16004d,
+        #321078
+    );
+
+    color: white;
+
+    min-height: 100vh;
+}
+
+
+/* NAVBAR */
+
+.navbar {
+    height: 75px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 0 7%;
+
+    background: #10003c;
+}
+
+.logo {
+    color: white;
+
+    text-decoration: none;
+
+    font-size: 25px;
+
+    font-weight: bold;
+}
+
+.logo span {
+    color: #e45cff;
+}
+
+nav {
+    display: flex;
+
+    gap: 12px;
+
+    align-items: center;
+}
+
+nav a {
+    color: white;
+
+    text-decoration: none;
+
+    padding: 10px 12px;
+}
+
+nav a:hover,
+nav .active {
+    color: #e45cff;
+}
+
+.login-btn,
+.register-btn {
+    border: 1px solid #e45cff;
+
+    border-radius: 7px;
+}
+
+.register-btn {
+    background: #e45cff;
+
+    color: #17002f !important;
+}
+
+.menu-btn {
+    display: none;
+
+    background: none;
+
+    border: none;
+
+    color: white;
+
+    font-size: 25px;
+}
+
+
+/* PAGE */
+
+.page {
+    padding: 55px 7%;
+
+    min-height: calc(100vh - 135px);
+}
+
+h1 {
+    font-size: 45px;
+
+    margin-bottom: 8px;
+}
+
+
+/* SEARCH */
+
+.search-box {
+    display: flex;
+
+    gap: 10px;
+
+    margin: 30px 0;
+}
+
+.search-box input,
+.search-box select {
+    padding: 13px;
+
+    border: none;
+
+    border-radius: 7px;
+}
+
+.search-box input {
+    flex: 1;
+}
+
+.search-box button,
+.event-card button {
+    padding: 12px 18px;
+
+    border: none;
+
+    border-radius: 7px;
+
+    background: #e45cff;
+
+    color: #19002f;
+
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+
+/* EVENTS */
+
+.event-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 20px;
+}
+
+.event-card {
+    background:
+        rgba(255,255,255,0.09);
+
+    padding: 22px;
+
+    border-radius: 12px;
+}
+
+.event-icon {
+    font-size: 42px;
+
+    margin-bottom: 15px;
+}
+
+.event-card h2 {
+    font-size: 21px;
+
+    margin-bottom: 15px;
+}
+
+.event-card p {
+    margin: 8px 0;
+
+    opacity: 0.8;
+}
+
+.event-card button {
+    margin-top: 15px;
+}
+
+
+/* FOOTER */
+
+footer {
+    text-align: center;
+
+    padding: 20px;
+
+    background: #0d0032;
+}
+
+
+/* MOBILE */
+
+@media(max-width: 900px) {
+
+    .event-grid {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+}
+
+@media(max-width: 650px) {
+
+    nav {
+        display: none;
+    }
+
+    .menu-btn {
+        display: block;
+    }
+
+    .search-box {
+        flex-direction: column;
+    }
+
+    .event-grid {
+        grid-template-columns: 1fr;
+    }
+
+}

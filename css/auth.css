@@ -1,0 +1,184 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+
+    min-height: 100vh;
+
+    background: linear-gradient(
+        135deg,
+        #16004d,
+        #321078
+    );
+
+    color: white;
+
+    display: flex;
+
+    flex-direction: column;
+}
+
+
+/* NAVBAR */
+
+.navbar {
+    height: 75px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 0 7%;
+
+    background: rgba(10,0,40,0.7);
+}
+
+.logo {
+    color: white;
+
+    text-decoration: none;
+
+    font-size: 25px;
+
+    font-weight: bold;
+}
+
+.logo span {
+    color: #e45cff;
+}
+
+nav {
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+}
+
+nav a {
+    color: white;
+
+    text-decoration: none;
+}
+
+.login-btn,
+.register-btn {
+    padding: 10px 12px;
+
+    border: 1px solid #e45cff;
+
+    border-radius: 7px;
+}
+
+.register-btn {
+    background: #e45cff;
+
+    color: #17002f !important;
+}
+
+
+/* PAGE */
+
+.page {
+    width: min(460px, 90%);
+
+    margin: 55px auto;
+
+    flex: 1;
+}
+
+
+/* FORM */
+
+.form-box {
+    background:
+        rgba(255,255,255,0.09);
+
+    padding: 35px;
+
+    border-radius: 16px;
+}
+
+.form-box h1 {
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    margin-bottom: 25px;
+
+    opacity: 0.8;
+}
+
+form {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 14px;
+}
+
+input {
+    padding: 14px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    font-size: 15px;
+}
+
+button {
+    padding: 14px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background: #e45cff;
+
+    color: #19002f;
+
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.message {
+    min-height: 20px;
+}
+
+.account-link {
+    margin-top: 20px;
+}
+
+.account-link a {
+    color: #e45cff;
+}
+
+
+/* FOOTER */
+
+footer {
+    text-align: center;
+
+    padding: 20px;
+
+    background: rgba(0,0,0,0.25);
+}
+
+
+/* MOBILE */
+
+@media(max-width:800px) {
+
+    nav {
+        display: none;
+    }
+
+}
