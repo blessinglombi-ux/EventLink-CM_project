@@ -1,0 +1,179 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+
+    background: linear-gradient(
+        135deg,
+        #16004d,
+        #321078
+    );
+
+    color: white;
+
+    min-height: 100vh;
+}
+
+.navbar {
+    height: 75px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 0 7%;
+
+    background: #10003c;
+}
+
+.logo {
+    color: white;
+
+    text-decoration: none;
+
+    font-size: 25px;
+
+    font-weight: bold;
+}
+
+.logo span {
+    color: #e45cff;
+}
+
+nav {
+    display: flex;
+
+    gap: 12px;
+}
+
+nav a {
+    color: white;
+
+    text-decoration: none;
+
+    padding: 10px;
+}
+
+nav a:hover,
+.active {
+    color: #e45cff;
+}
+
+.login-btn,
+.register-btn {
+    border: 1px solid #e45cff;
+
+    border-radius: 7px;
+}
+
+.register-btn {
+    background: #e45cff;
+
+    color: #17002f !important;
+}
+
+.menu-btn {
+    display: none;
+
+    background: none;
+
+    border: none;
+
+    color: white;
+
+    font-size: 25px;
+}
+
+.page {
+    padding: 70px 8%;
+
+    min-height: calc(100vh - 135px);
+}
+
+.about-box {
+    max-width: 850px;
+
+    margin: auto;
+
+    text-align: center;
+}
+
+.small-title {
+    color: #f28cff;
+
+    letter-spacing: 3px;
+
+    font-weight: bold;
+}
+
+.about-box h1 {
+    font-size: 48px;
+
+    margin: 15px 0;
+}
+
+.about-box p {
+    line-height: 1.7;
+
+    opacity: 0.85;
+}
+
+.features {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 20px;
+
+    max-width: 1000px;
+
+    margin: 50px auto;
+}
+
+.features div {
+    background:
+        rgba(255,255,255,0.09);
+
+    padding: 28px;
+
+    border-radius: 12px;
+}
+
+.features h2 {
+    margin-bottom: 12px;
+}
+
+footer {
+    text-align: center;
+
+    padding: 20px;
+
+    background: #0d0032;
+}
+
+@media(max-width:800px) {
+
+    nav {
+        display: none;
+    }
+
+    .menu-btn {
+        display: block;
+    }
+
+    .features {
+        grid-template-columns: 1fr;
+    }
+
+    .about-box h1 {
+        font-size: 36px;
+    }
+
+}

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>EventLink CM | Contact</title>
+
+    <link rel="stylesheet"
+          href="css/contact.css">
+
+</head>
+
+<body>
+
+
+<header class="navbar">
+
+    <a href="index.html" class="logo">
+        EventLink <span>CM</span>
+    </a>
+
+    <nav id="navMenu">
+
+        <a href="index.html">
+            Home
+        </a>
+
+        <a href="events.html">
+            Events
+        </a>
+
+        <a href="about.html">
+            About
+        </a>
+
+        <a href="contact.html"
+           class="active">
+            Contact
+        </a>
+
+        <a href="login.html"
+           class="login-btn">
+            Login
+        </a>
+
+        <a href="register.html"
+           class="register-btn">
+            Register
+        </a>
+
+    </nav>
+
+    <button class="menu-btn"
+            onclick="toggleMenu()">
+        ☰
+    </button>
+
+</header>
+
+
+<main class="page">
+
+    <div class="contact-container">
+
+
+        <section>
+
+            <p class="small-title">
+                GET IN TOUCH
+            </p>
+
+            <h1>
+                Contact EventLink CM
+            </h1>
+
+            <p>
+                Have a question, suggestion or problem?
+                Send us a message.
+            </p>
+
+            <div class="contact-info">
+
+                <p>
+                    📧 eventlinkcm@example.com
+                </p>
+
+                <p>
+                    📍 Cameroon
+                </p>
+
+                <p>
+                    📞 +237 600 000 000
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <form id="contactForm"
+              onsubmit="sendMessage(event)">
+
+            <input
+                id="name"
+                type="text"
+                placeholder="Your name"
+                required
+            >
+
+            <input
+                id="email"
+                type="email"
+                placeholder="Your email"
+                required
+            >
+
+            <textarea
+                id="message"
+                placeholder="Your message"
+                rows="6"
+                required>
+            </textarea>
+
+            <button type="submit">
+                Send Message
+            </button>
+
+            <p id="formMessage"></p>
+
+        </form>
+
+    </div>
+
+</main>
+
+
+<footer>
+    <p>© 2026 EventLink CM.</p>
+</footer>
+
+
+<script src="js/contact.js"></script>
+
+</body>
+</html>
