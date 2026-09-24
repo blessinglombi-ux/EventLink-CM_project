@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+{% block title %}
+Create Account | EventLink CM
+{% endblock %}
+
+
+{% block content %}
+
+<section class="auth-page">
+
+    <div class="auth-container">
+
+        <div class="auth-decoration">
+
+            <span>
+                ✨
+            </span>
+
+            <h2>
+                Join the community.
+            </h2>
+
+            <p>
+                Choose how you want to use
+                EventLink CM.
+            </p>
+
+        </div>
+
+
+        <div class="auth-form-container">
+
+            <div class="auth-header">
+
+                <div class="auth-logo">
+                    ✦
+                </div>
+
+                <h1>
+                    Create account
+                </h1>
+
+                <p>
+                    Choose your account type.
+                </p>
+
+            </div>
+
+
+            <div class="role-selection">
+
+                <a href="/register/participant/"
+                   class="role-card">
+
+                    <span class="role-icon">
+                        🎟️
+                    </span>
+
+                    <div>
+
+                        <h3>
+                            Participant
+                        </h3>
+
+                        <p>
+                            Discover events and
+                            reserve tickets.
+                        </p>
+
+                    </div>
+
+                    <span>
+                        →
+                    </span>
+
+                </a>
+
+
+                <a href="/register/organizer/"
+                   class="role-card">
+
+                    <span class="role-icon">
+                        🎪
+                    </span>
+
+                    <div>
+
+                        <h3>
+                            Organizer
+                        </h3>
+
+                        <p>
+                            Create and manage events.
+                        </p>
+
+                    </div>
+
+                    <span>
+                        →
+                    </span>
+
+                </a>
+
+            </div>
+
+
+            <p class="auth-bottom">
+
+                Already have an account?
+
+                <a href="/login/">
+                    Sign in
+                </a>
+
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}
