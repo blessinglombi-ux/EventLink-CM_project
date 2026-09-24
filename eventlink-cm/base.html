@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}EventLink CM{% endblock %}</title>
+
+<meta name="description"
+      content="EventLink CM connects event organizers with participants in Cameroon.">
+
+<!-- Main CSS -->
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+<!-- Page-specific CSS -->
+{% block extra_css %}{% endblock %}
+</head>
+<body>
+<!-- ================================
+     NAVIGATION BAR
+     ================================= -->
+
+<header class="site-header">
+
+    <div class="container navbar">
+
+        <!-- Logo -->
+        <a href="{% url 'home' %}" class="logo">
+
+            <img src="{% static 'images/logo.png' %}"
+                 alt="EventLink CM Logo">
+
+            <span>EventLink CM</span>
+
+        </a>
+
+
+        <!-- Mobile Menu Button -->
+        <button
+            class="menu-toggle"
+            type="button"
+            aria-label="Open navigation">
+
+            ☰
+
+        </button>
+
+
+        <!-- Navigation Links -->
+        <nav class="main-nav">
+
+            <a href="{% url 'home' %}">
+                Home
+            </a>
+
+            <a href="{% url 'about' %}">
+                About
+            </a>
+
+            <a href="{% url 'events' %}">
+                Events
+            </a>
+
+            <a href="{% url 'contact' %}">
+                Contact
+            </a>
+
+        </nav>
+
+
+        <!-- Account Buttons -->
+        <div class="nav-actions">
+
+            {% if user.is_authenticated %}
+
+                <a href="#" class="btn btn-primary">
+                    Dashboard
+                </a>
+
+                <a href="#" class="btn btn-outline">
+                    Logout
+                </a>
+
+            {% else %}
+
+                <a href="{% url 'login' %}"
+                   class="btn btn-outline">
+                    Login
+                </a>
+
+                <a href="{% url 'register' %}"
+                   class="btn btn-primary">
+                    Sign Up
+                </a>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<!-- ================================
+     DJANGO MESSAGES
+     ================================= -->
+
+{% if messages %}
+
+    <div class="container" style="padding-top: 15px;">
+
+        {% for message in messages %}
+
+            <div class="alert
+                {% if message.tags == 'success' %}
+                    alert-success
+                {% elif message.tags == 'error' %}
+                    alert-error
+                {% else %}
+                    alert-info
+                {% endif %}">
+
+                {{ message }}
+
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+{% endif %}
+
+
+<!-- ================================
+     MAIN PAGE CONTENT
+     ================================= -->
+
+<main>
+
+    {% block content %}
+
+    {% endblock %}
+
+</main>
+
+
+<!-- ================================
+     FOOTER
+     ================================= -->
+
+<footer class="site-footer">
+
+    <div class="container">
+
+        <div class="footer-grid">
+
+            <!-- About -->
+            <div>
+
+                <h3 class="footer-title">
+                    EventLink CM
+                </h3>
+
+                <p>
+                    Connecting event organizers and
+                    participants through one simple platform.
+                </p>
+
+            </div>
+
+
+            <!-- Quick Links -->
+            <div>
+
+                <h3 class="footer-title">
+                    Quick Links
+                </h3>
+
+                <ul class="footer-links">
+
+                    <li>
+                        <a href="{% url 'home' %}">
+                            Home
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{% url 'events' %}">
+                            Events
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{% url 'about' %}">
+                            About
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="{% url 'contact' %}">
+                            Contact
+                        </a>
+                    </li>
+
+                </ul>
+
+            </div>
+
+
+            <!-- Account -->
+            <div>
+
+                <h3 class="footer-title">
+                    Account
+                </h3>
+
+                <ul class="footer-links">
+
+                    {% if user.is_authenticated %}
+
+                        <li>
+                            <a href="#">
+                                Dashboard
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="#">
+                                Logout
+                            </a>
+                        </li>
+
+                    {% else %}
+
+                        <li>
+                            <a href="{% url 'login' %}">
+                                Login
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="{% url 'register' %}">
+                                Create Account
+                            </a>
+                        </li>
+
+                    {% endif %}
+
+                </ul>
+
+            </div>
+
+        </div>
+
+
+        <!-- Footer Bottom -->
+        <div class="footer-bottom">
+
+            <p>
+                © <span class="current-year"></span>
+                EventLink CM.
+                All rights reserved.
+            </p>
+
+            <p>
+                Made for Cameroon 🇨🇲
+            </p>
+
+        </div>
+
+    </div>
+
+</footer>
+
+
+<!-- ================================
+     JAVASCRIPT
+     ================================= -->
+
+<script src="{% static 'js/main.js' %}"></script>
+
+{% block extra_js %}{% endblock %}
+</body>
+</html>
