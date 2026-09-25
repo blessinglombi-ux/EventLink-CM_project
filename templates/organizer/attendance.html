@@ -1,0 +1,406 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Attendance | EventLink CM{% endblock %}
+{% block content %}
+<section class="section">
+    <div class="container">
+        <!-- Page Header -->
+        <div class="dashboard-header">
+            <div>
+                <span class="eyebrow">
+                    ORGANIZER
+                </span>
+                <h1>
+                    Attendance
+                </h1>
+                <p>
+                    Check participants in and monitor attendance
+                    for your events.
+                </p>
+            </div>
+            <div>
+                <a
+                    href="{% url 'organizer_events' %}"
+                    class="btn btn-outline">
+                    ← My Events
+                </a>
+            </div>
+        </div>
+        <!-- Attendance Statistics -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">
+                    Registered
+                </div>
+                <div class="stat-number">
+                    {{ total_registered|default:"0" }}
+                </div>
+                <p>
+                    Total registered participants
+                </p>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">
+                    Present
+                </div>
+                <div class="stat-number">
+                    {{ total_present|default:"0" }}
+                </div>
+                <p>
+                    Participants checked in
+                </p>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">
+                    Absent
+                </div>
+                <div class="stat-number">
+                    {{ total_absent|default:"0" }}
+                </div>
+                <p>
+                    Not checked in
+                </p>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">
+                    Attendance Rate
+                </div>
+                <div class="stat-number">
+                    {{ attendance_rate|default:"0" }}%
+                </div>
+                <p>
+                    Overall attendance
+                </p>
+            </div>
+        </div>
+        <!-- QR Scanner -->
+        <div class="card scanner-card">
+            <div class="section-title">
+                <span class="eyebrow">
+                    CHECK-IN
+                </span>
+                <h2>
+                    📱 Scan Participant Ticket
+                </h2>
+                <p>
+                    Scan the QR code on a participant's ticket
+                    to mark them as present.
+                </p>
+            </div>
+            <!-- Scanner Area -->
+            <div
+                id="qr-scanner-area"
+                class="scanner-area"
+                style="display: none;">
+                <div
+                    id="qr-reader"
+                    class="qr-reader">
+                </div>
+            </div>
+            <!-- Scanner Result -->
+            <div
+                id="scanner-result"
+                class="scanner-result"
+                style="display: none;">
+                <div class="scanner-result-icon">
+                    ✓
+                </div>
+                <div>
+                    <h3 id="scanner-result-title">
+                        Participant Checked In
+                    </h3>
+                    <p id="scanner-result-message">
+                        Attendance has been recorded.
+                    </p>
+                </div>
+            </div>
+            <!-- Scanner Buttons -->
+            <div class="form-actions">
+                <button
+                    type="button"
+                    id="start-scanner"
+                    class="btn btn-primary">
+                    📷 Start Scanner
+                </button>
+                <button
+                    type="button"
+                    id="stop-scanner"
+                    class="btn btn-outline"
+                    style="display: none;">
+                    Stop Scanner
+                </button>
+            </div>
+        </div>
+        <!-- Manual Check-in -->
+        <div class="card">
+            <div class="section-title">
+                <h2>
+                    Manual Check-In
+                </h2>
+                <p>
+                    If the QR scanner cannot be used, you can
+                    enter the participant's ticket code manually.
+                </p>
+            </div>
+            <form
+                method="POST"
+                action="{% url 'mark_attendance' %}">
+                {% csrf_token %}
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="ticket_code">
+                            Ticket Code
+                        </label>
+                        <input
+                            type="text"
+                            id="ticket_code"
+                            name="ticket_code"
+                            class="form-control"
+                            placeholder="Example: EL-2026-0001"
+                            required>
+                    </div>
+                    <div class="form-group">
+                        <label for="event">
+                            Event
+                        </label>
+                        <select
+                            id="event"
+                            name="event"
+                            class="form-control">
+                            <option value="">
+                                Select event
+                            </option>
+                            {% for event in events %}
+                                <option value="{{ event.id }}">
+                                    {{ event.title }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <button
+                    type="submit"
+                    class="btn btn-secondary">
+                    ✓ Check In Participant
+                </button>
+            </form>
+        </div>
+        <!-- Attendance Table -->
+        <div class="card">
+            <div class="section-title">
+                <h2>
+                    Attendance Records
+                </h2>
+                <p>
+                    View the attendance status of registered participants.
+                </p>
+            </div>
+            <div class="table-container">
+                <table class="dashboard-table">
+                    <thead>
+                        <tr>
+                            <th>
+                                #
+                            </th>
+                            <th>
+                                Participant
+                            </th>
+                            <th>
+                                Event
+                            </th>
+                            <th>
+                                Ticket Code
+                            </th>
+                            <th>
+                                Status
+                            </th>
+                            <th>
+                                Check-in Time
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for registration in registrations %}
+                            <tr>
+                                <!-- Number -->
+                                <td>
+                                    {{ forloop.counter }}
+                                </td>
+                                <!-- Participant -->
+                                <td>
+                                    <div class="participant-cell">
+                                        <div class="participant-avatar">
+                                            {{ registration.participant.first_name|first|default:registration.participant.username|first|upper }}
+                                        </div>
+                                        <div>
+                                            <strong>
+                                                {{ registration.participant.get_full_name|default:registration.participant.username }}
+                                            </strong>
+                                            <small>
+                                                {{ registration.participant.email }}
+                                            </small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <!-- Event -->
+                                <td>
+                                    {{ registration.event.title }}
+                                </td>
+                                <!-- Ticket -->
+                                <td>
+                                    {% if registration.ticket.code %}
+                                        <code>
+                                            {{ registration.ticket.code }}
+                                        </code>
+                                    {% else %}
+                                        <span>
+                                            N/A
+                                        </span>
+                                    {% endif %}
+                                </td>
+                                <!-- Status -->
+                                <td>
+                                    {% if registration.attended %}
+                                        <span class="ticket-status attended">
+                                            ✓ Present
+                                        </span>
+                                    {% else %}
+                                        <span class="ticket-status not-attended">
+                                            Absent
+                                        </span>
+                                    {% endif %}
+                                </td>
+                                <!-- Check-in Time -->
+                                <td>
+                                    {% if registration.checked_in_at %}
+                                        {{ registration.checked_in_at|date:"M d, Y H:i" }}
+                                    {% else %}
+                                        —
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="6">
+                                    <div class="empty-state">
+                                        <div class="empty-icon">
+                                            ✓
+                                        </div>
+                                        <h3>
+                                            No Attendance Records
+                                        </h3>
+                                        <p>
+                                            Attendance records will appear
+                                            here when participants register
+                                            for your events.
+                                        </p>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- Attendance Information -->
+        <div class="card">
+            <div class="section-title">
+                <h2>
+                    How Attendance Works
+                </h2>
+            </div>
+            <div class="quick-actions">
+                <div class="ticket-option">
+                    <span class="ticket-status attended">
+                        1. Registered
+                    </span>
+                    <span>
+                        The participant registers for your event
+                        and receives a free ticket.
+                    </span>
+                </div>
+                <div class="ticket-option">
+                    <span class="ticket-status valid">
+                        2. Scan
+                    </span>
+                    <span>
+                        You scan the QR code on the participant's
+                        ticket when they arrive.
+                    </span>
+                </div>
+                <div class="ticket-option">
+                    <span class="ticket-status attended">
+                        3. Present
+                    </span>
+                    <span>
+                        The participant is automatically marked
+                        as present.
+                    </span>
+                </div>
+                <div class="ticket-option">
+                    <span class="ticket-status not-attended">
+                        4. Absent
+                    </span>
+                    <span>
+                        Registered participants who are not checked
+                        in can be recorded as absent.
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+{% block extra_js %}
+<!-- QR Scanner Library -->
+<script src="https://unpkg.com/html5-qrcode"
+        type="text/javascript">
+</script>
+<script src="{% static 'js/qr-scanner.js' %}">
+</script>
+<script>
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+        const startButton =
+            document.getElementById(
+                "start-scanner"
+            );
+        const stopButton =
+            document.getElementById(
+                "stop-scanner"
+            );
+        const scannerArea =
+            document.getElementById(
+                "qr-scanner-area"
+            );
+        if (startButton) {
+            startButton.addEventListener(
+                "click",
+                function () {
+                    scannerArea.style.display =
+                        "block";
+                    startButton.style.display =
+                        "none";
+                    stopButton.style.display =
+                        "inline-flex";
+                }
+            );
+        }
+        if (stopButton) {
+            stopButton.addEventListener(
+                "click",
+                function () {
+                    scannerArea.style.display =
+                        "none";
+                    startButton.style.display =
+                        "inline-flex";
+                    stopButton.style.display =
+                        "none";
+                }
+            );
+        }
+    }
+);
+</script>
+{% endblock %}

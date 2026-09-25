@@ -1,0 +1,276 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Participants | EventLink CM{% endblock %}
+{% block content %}
+<section class="section">
+    <div class="container">
+        <!-- Page Header -->
+        <div class="dashboard-header">
+            <div>
+                <span class="eyebrow">
+                    ORGANIZER
+                </span>
+                <h1>
+                    Participants
+                </h1>
+                <p>
+                    View and manage participants registered
+                    for your events.
+                </p>
+            </div>
+            <div>
+                <a
+                    href="{% url 'organizer_events' %}"
+                    class="btn btn-outline">
+                    ← My Events
+                </a>
+            </div>
+        </div>
+        <!-- Statistics -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">
+                    Total Participants
+                </div>
+                <div class="stat-number">
+                    {{ total_participants|default:"0" }}
+                </div>
+                <p>
+                    All registrations
+                </p>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">
+                    Checked In
+                </div>
+                <div class="stat-number">
+                    {{ checked_in|default:"0" }}
+                </div>
+                <p>
+                    Participants present
+                </p>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">
+                    Not Checked In
+                </div>
+                <div class="stat-number">
+                    {{ not_checked_in|default:"0" }}
+                </div>
+                <p>
+                    Participants remaining
+                </p>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">
+                    Events
+                </div>
+                <div class="stat-number">
+                    {{ total_events|default:"0" }}
+                </div>
+                <p>
+                    Events with registrations
+                </p>
+            </div>
+        </div>
+        <!-- Search and Filter -->
+        <div class="card">
+            <div class="section-title">
+                <h2>
+                    Find Participants
+                </h2>
+                <p>
+                    Search participants or filter by event.
+                </p>
+            </div>
+            <form method="GET">
+                <div class="form-grid">
+                    <!-- Search -->
+                    <div class="form-group">
+                        <label for="search">
+                            Search Participant
+                        </label>
+                        <input
+                            type="search"
+                            id="search"
+                            name="search"
+                            class="form-control"
+                            value="{{ request.GET.search }}"
+                            placeholder="Name or email...">
+                    </div>
+                    <!-- Event Filter -->
+                    <div class="form-group">
+                        <label for="event">
+                            Event
+                        </label>
+                        <select
+                            id="event"
+                            name="event"
+                            class="form-control">
+                            <option value="">
+                                All Events
+                            </option>
+                            {% for event in events %}
+                                <option
+                                    value="{{ event.id }}"
+                                    {% if request.GET.event == event.id|stringformat:"s" %}
+                                        selected
+                                    {% endif %}>
+                                    {{ event.title }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button
+                        type="submit"
+                        class="btn btn-secondary">
+                        🔍 Search
+                    </button>
+                    <a
+                        href="{% url 'organizer_participants' %}"
+                        class="btn btn-outline">
+                        Clear
+                    </a>
+                </div>
+            </form>
+        </div>
+        <!-- Participants Table -->
+        <div class="card">
+            <div class="section-title">
+                <h2>
+                    Registered Participants
+                </h2>
+                <p>
+                    Participants who have registered for your events.
+                </p>
+            </div>
+            <div class="table-container">
+                <table class="dashboard-table">
+                    <thead>
+                        <tr>
+                            <th>
+                                #
+                            </th>
+                            <th>
+                                Participant
+                            </th>
+                            <th>
+                                Email
+                            </th>
+                            <th>
+                                Event
+                            </th>
+                            <th>
+                                Registered
+                            </th>
+                            <th>
+                                Attendance
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for registration in registrations %}
+                            <tr>
+                                <!-- Number -->
+                                <td>
+                                    {{ forloop.counter }}
+                                </td>
+                                <!-- Participant -->
+                                <td>
+                                    <div class="participant-cell">
+                                        <div class="participant-avatar">
+                                            {{ registration.participant.first_name|first|default:registration.participant.username|first|upper }}
+                                        </div>
+                                        <div>
+                                            <strong>
+                                                {{ registration.participant.get_full_name|default:registration.participant.username }}
+                                            </strong>
+                                            <small>
+                                                @{{ registration.participant.username }}
+                                            </small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <!-- Email -->
+                                <td>
+                                    {{ registration.participant.email }}
+                                </td>
+                                <!-- Event -->
+                                <td>
+                                    <strong>
+                                        {{ registration.event.title }}
+                                    </strong>
+                                </td>
+                                <!-- Registration Date -->
+                                <td>
+                                    {{ registration.created_at|date:"M d, Y" }}
+                                </td>
+                                <!-- Attendance -->
+                                <td>
+                                    {% if registration.attended %}
+                                        <span class="ticket-status attended">
+                                            ✓ Attended
+                                        </span>
+                                    {% else %}
+                                        <span class="ticket-status not-attended">
+                                            Not Checked In
+                                        </span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% empty %}
+                            <!-- Empty State -->
+                            <tr>
+                                <td colspan="6">
+                                    <div class="empty-state">
+                                        <div class="empty-icon">
+                                            👥
+                                        </div>
+                                        <h3>
+                                            No Participants Yet
+                                        </h3>
+                                        <p>
+                                            Participants will appear here
+                                            when they register for one of
+                                            your events.
+                                        </p>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- Participant Information -->
+        <div class="card">
+            <div class="section-title">
+                <h2>
+                    Attendance Information
+                </h2>
+            </div>
+            <div class="quick-actions">
+                <div class="ticket-option">
+                    <span class="ticket-status attended">
+                        ✓ Attended
+                    </span>
+                    <span>
+                        Participant has been checked in.
+                    </span>
+                </div>
+                <div class="ticket-option">
+                    <span class="ticket-status not-attended">
+                        Not Checked In
+                    </span>
+                    <span>
+                        Participant registered but has not
+                        been checked in.
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

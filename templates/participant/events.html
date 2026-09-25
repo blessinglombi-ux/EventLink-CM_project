@@ -1,0 +1,315 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Explore Events | EventLink CM{% endblock %}
+{% block content %}
+<section class="section">
+    <div class="container">
+        <!-- Page Header -->
+        <div class="dashboard-header">
+            <div>
+                <span class="eyebrow">
+                    EVENTLINK CM
+                </span>
+                <h1>
+                    Explore Events
+                </h1>
+                <p>
+                    Discover events, workshops, conferences and
+                    activities happening around you.
+                </p>
+            </div>
+            <div>
+                <a
+                    href="{% url 'participant_dashboard' %}"
+                    class="btn btn-outline">
+                    ← Dashboard
+                </a>
+            </div>
+        </div>
+        <!-- Search and Filters -->
+        <div class="card">
+            <div class="section-title">
+                <h2>
+                    Find an Event
+                </h2>
+                <p>
+                    Search or filter events based on what interests you.
+                </p>
+            </div>
+            <form method="GET">
+                <div class="form-grid">
+                    <!-- Search -->
+                    <div class="form-group">
+                        <label for="search">
+                            Search
+                        </label>
+                        <input
+                            type="search"
+                            id="search"
+                            name="search"
+                            class="form-control"
+                            value="{{ request.GET.search }}"
+                            placeholder="Search event name...">
+                    </div>
+                    <!-- Category -->
+                    <div class="form-group">
+                        <label for="category">
+                            Category
+                        </label>
+                        <select
+                            id="category"
+                            name="category"
+                            class="form-control">
+                            <option value="">
+                                All Categories
+                            </option>
+                            <option value="Education"
+                                {% if request.GET.category == "Education" %}
+                                    selected
+                                {% endif %}>
+                                Education
+                            </option>
+                            <option value="Technology"
+                                {% if request.GET.category == "Technology" %}
+                                    selected
+                                {% endif %}>
+                                Technology
+                            </option>
+                            <option value="Business"
+                                {% if request.GET.category == "Business" %}
+                                    selected
+                                {% endif %}>
+                                Business
+                            </option>
+                            <option value="Entertainment"
+                                {% if request.GET.category == "Entertainment" %}
+                                    selected
+                                {% endif %}>
+                                Entertainment
+                            </option>
+                            <option value="Sports"
+                                {% if request.GET.category == "Sports" %}
+                                    selected
+                                {% endif %}>
+                                Sports
+                            </option>
+                            <option value="Community"
+                                {% if request.GET.category == "Community" %}
+                                    selected
+                                {% endif %}>
+                                Community
+                            </option>
+                            <option value="Workshop"
+                                {% if request.GET.category == "Workshop" %}
+                                    selected
+                                {% endif %}>
+                                Workshop
+                            </option>
+                            <option value="Conference"
+                                {% if request.GET.category == "Conference" %}
+                                    selected
+                                {% endif %}>
+                                Conference
+                            </option>
+                            <option value="Other"
+                                {% if request.GET.category == "Other" %}
+                                    selected
+                                {% endif %}>
+                                Other
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button
+                        type="submit"
+                        class="btn btn-primary">
+                        🔍 Search Events
+                    </button>
+                    <a
+                        href="{% url 'participant_events' %}"
+                        class="btn btn-outline">
+                        Clear Filters
+                    </a>
+                </div>
+            </form>
+        </div>
+        <!-- Event Count -->
+        <div class="section-title">
+            <h2>
+                Available Events
+            </h2>
+            <p>
+                {% if events %}
+                    Showing
+                    {{ events|length }}
+                    available event{{ events|length|pluralize }}.
+                {% else %}
+                    No events found.
+                {% endif %}
+            </p>
+        </div>
+        <!-- Events Grid -->
+        {% if events %}
+            <div class="events-grid">
+                {% for event in events %}
+                    <article class="event-card">
+                        <!-- Poster -->
+                        <div class="event-image">
+                            {% if event.poster %}
+                                <img
+                                    src="{{ event.poster.url }}"
+                                    alt="{{ event.title }}">
+                            {% else %}
+                                <div class="event-placeholder">
+                                    🎪
+                                </div>
+                            {% endif %}
+                        </div>
+                        <!-- Event Content -->
+                        <div class="event-content">
+                            <!-- Category -->
+                            <span class="event-category">
+                                {{ event.category|default:"Event" }}
+                            </span>
+                            <!-- Title -->
+                            <h2 class="event-title">
+                                {{ event.title }}
+                            </h2>
+                            <!-- Description -->
+                            <p class="event-description">
+                                {{ event.description|truncatewords:20 }}
+                            </p>
+                            <!-- Date -->
+                            <p class="event-info">
+                                📅
+                                <strong>
+                                    Date:
+                                </strong>
+                                {{ event.date }}
+                            </p>
+                            <!-- Time -->
+                            <p class="event-info">
+                                🕐
+                                <strong>
+                                    Time:
+                                </strong>
+                                {{ event.time }}
+                            </p>
+                            <!-- Location -->
+                            <p class="event-info">
+                                📍
+                                <strong>
+                                    Location:
+                                </strong>
+                                {{ event.location }}
+                            </p>
+                            <!-- Available Slots -->
+                            <p class="event-info">
+                                👥
+                                <strong>
+                                    Slots:
+                                </strong>
+                                {% if event.capacity %}
+                                    {{ event.registered_count|default:"0" }}
+                                    /
+                                    {{ event.capacity }}
+                                {% else %}
+                                    Available
+                                {% endif %}
+                            </p>
+                            <!-- Registration Progress -->
+                            {% if event.capacity %}
+                                <div class="event-progress">
+                                    <div class="progress">
+                                        <div
+                                            class="progress-bar"
+                                            style="width: {% widthratio event.register_count event.capacity 100 %}%;"> 
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                            {% endif %}
+                            <!-- Ticket -->
+                            <div class="ticket-option">
+                                <span class="ticket-status valid">
+                                    🎟️ Free Ticket
+                                </span>
+                                <span>
+                                    No payment required
+                                </span>
+                            </div>
+                            <!-- Action -->
+                            <div class="event-footer">
+                                <a
+                                    href="{% url 'participant_event_detail' event.id %}"
+                                    class="btn btn-primary">
+                                    View Event
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+                {% endfor %}
+            </div>
+        {% else %}
+            <!-- Empty State -->
+            <div class="card">
+                <div class="empty-state">
+                    <div class="empty-icon">
+                        🔎
+                    </div>
+                    <h2>
+                        No Events Found
+                    </h2>
+                    <p>
+                        We couldn't find any events matching your
+                        search or filters.
+                    </p>
+                    <a
+                        href="{% url 'participant_events' %}"
+                        class="btn btn-primary">
+                        View All Events
+                    </a>
+                </div>
+            </div>
+        {% endif %}
+        <!-- Information -->
+        <div class="card">
+            <div class="section-title">
+                <h2>
+                    🎟️ About Event Registration
+                </h2>
+                <p>
+                    EventLink CM currently provides free event tickets.
+                </p>
+            </div>
+            <div class="quick-actions">
+                <div class="ticket-option">
+                    <span class="ticket-status valid">
+                        Free
+                    </span>
+                    <span>
+                        Register without making a payment.
+                    </span>
+                </div>
+                <div class="ticket-option">
+                    <span class="ticket-status valid">
+                        QR
+                    </span>
+                    <span>
+                        Receive a ticket containing a QR code.
+                    </span>
+                </div>
+                <div class="ticket-option">
+                    <span class="ticket-status valid">
+                        Check-in
+                    </span>
+                    <span>
+                        Present your ticket when you arrive.
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
