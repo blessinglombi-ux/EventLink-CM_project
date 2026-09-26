@@ -1,0 +1,753 @@
+/* =========================================================
+   EVENTLINK CM
+   Events Styles
+   ========================================================= */
+/* =========================================================
+   1. EVENTS PAGE HEADER
+   ========================================================= */
+.events-page-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 25px;
+    margin-bottom: 30px;
+}
+.events-page-header-content {
+    max-width: 700px;
+}
+.events-page-header h1 {
+    margin-bottom: 8px;
+}
+.events-page-header p {
+    margin: 0;
+}
+/* =========================================================
+   2. EVENT FILTERS
+   ========================================================= */
+.event-filters {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 18px;
+    margin-bottom: 28px;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+}
+.event-filter-group {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+.event-filter-label {
+    color: var(--muted);
+    font-size: 0.78rem;
+    font-weight: 700;
+}
+.event-filter-input {
+    min-height: 42px;
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: white;
+    color: var(--text);
+    outline: none;
+}
+.event-filter-input:focus {
+    border-color: var(--primary);
+    box-shadow:
+        0 0 0 3px rgba(37, 99, 235, 0.08);
+}
+.event-search {
+    position: relative;
+    flex: 1;
+    min-width: 220px;
+}
+.event-search input {
+    width: 100%;
+    min-height: 42px;
+    padding: 8px 12px 8px 38px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    outline: none;
+}
+.event-search input:focus {
+    border-color: var(--primary);
+    box-shadow:
+        0 0 0 3px rgba(37, 99, 235, 0.08);
+}
+.event-search-icon {
+    position: absolute;
+    top: 50%;
+    left: 13px;
+    transform: translateY(-50%);
+    color: var(--muted);
+    pointer-events: none;
+}
+/* =========================================================
+   3. CATEGORY FILTER
+   ========================================================= */
+.event-category-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 25px;
+}
+.category-filter {
+    padding: 7px 13px;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    background: white;
+    color: var(--muted);
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease;
+}
+.category-filter:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+.category-filter.active {
+    border-color: var(--primary);
+    background: var(--primary);
+    color: white;
+}
+/* =========================================================
+   4. EVENT GRID
+   ========================================================= */
+.events-page-grid {
+    display: grid;
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+    gap: 24px;
+}
+/* =========================================================
+   5. EVENT CARD
+   ========================================================= */
+.events-page-card {
+    overflow: hidden;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+.events-page-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow);
+}
+/* =========================================================
+   6. EVENT CARD IMAGE
+   ========================================================= */
+.events-page-card-image {
+    position: relative;
+    height: 210px;
+    overflow: hidden;
+    background: #eef2f7;
+}
+.events-page-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.35s ease;
+}
+.events-page-card:hover
+.events-page-card-image img {
+    transform: scale(1.04);
+}
+.events-page-card-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #eef2f7;
+    font-size: 4rem;
+}
+/* =========================================================
+   7. EVENT BADGE
+   ========================================================= */
+.event-card-badge {
+    position: absolute;
+    top: 13px;
+    left: 13px;
+    padding: 5px 10px;
+    border-radius: 20px;
+    background: white;
+    color: var(--primary);
+    font-size: 0.72rem;
+    font-weight: 700;
+    box-shadow: var(--shadow-sm);
+}
+.event-card-badge.free {
+    color: var(--success);
+}
+.event-card-badge.full {
+    color: var(--danger);
+}
+.event-card-badge.upcoming {
+    color: var(--primary);
+}
+/* =========================================================
+   8. EVENT CARD CONTENT
+   ========================================================= */
+.events-page-card-content {
+    padding: 21px;
+}
+.events-page-card-content h2 {
+    margin-bottom: 8px;
+    font-size: 1.2rem;
+}
+.events-page-card-content > p {
+    font-size: 0.86rem;
+}
+/* =========================================================
+   9. EVENT META
+   ========================================================= */
+.event-meta {
+    display: grid;
+    gap: 8px;
+    margin: 15px 0;
+}
+.event-meta-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    color: var(--muted);
+    font-size: 0.82rem;
+}
+.event-meta-icon {
+    width: 20px;
+    flex-shrink: 0;
+    text-align: center;
+}
+/* =========================================================
+   10. EVENT CARD FOOTER
+   ========================================================= */
+.events-page-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding-top: 15px;
+    border-top: 1px solid var(--border);
+}
+.event-slots {
+    color: var(--muted);
+    font-size: 0.76rem;
+}
+.event-slots strong {
+    color: var(--secondary);
+}
+/* =========================================================
+   11. EVENT DETAIL PAGE
+   ========================================================= */
+.event-detail-page {
+    padding: 45px 0;
+}
+.event-detail-layout {
+    display: grid;
+    grid-template-columns:
+        minmax(0, 1.6fr)
+        minmax(300px, 0.8fr);
+    gap: 28px;
+}
+.event-detail-main {
+    min-width: 0;
+}
+.event-detail-sidebar {
+    min-width: 0;
+}
+/* =========================================================
+   12. EVENT DETAIL IMAGE
+   ========================================================= */
+.event-detail-cover {
+    position: relative;
+    width: 100%;
+    min-height: 430px;
+    overflow: hidden;
+    margin-bottom: 25px;
+    border-radius: var(--radius-lg);
+    background: #eef2f7;
+}
+.event-detail-cover img {
+    width: 100%;
+    height: 100%;
+    min-height: 430px;
+    object-fit: cover;
+}
+.event-detail-cover-placeholder {
+    width: 100%;
+    min-height: 430px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 7rem;
+}
+/* =========================================================
+   13. EVENT DETAIL HEADER
+   ========================================================= */
+.event-detail-heading {
+    margin-bottom: 25px;
+}
+.event-detail-heading h1 {
+    margin-bottom: 10px;
+}
+.event-detail-category {
+    display: inline-block;
+    padding: 6px 11px;
+    margin-bottom: 12px;
+    border-radius: 20px;
+    background: var(--primary-light);
+    color: var(--primary);
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+/* =========================================================
+   14. EVENT DESCRIPTION
+   ========================================================= */
+.event-description-box {
+    padding: 25px;
+    margin-bottom: 25px;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+}
+.event-description-box h2 {
+    font-size: 1.25rem;
+}
+.event-description-box p {
+    font-size: 0.95rem;
+    line-height: 1.8;
+}
+/* =========================================================
+   15. EVENT INFORMATION
+   ========================================================= */
+.event-info-grid {
+    display: grid;
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+    gap: 13px;
+    margin-bottom: 25px;
+}
+.event-info-box {
+    display: flex;
+    gap: 12px;
+    padding: 17px;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+}
+.event-info-icon {
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border-radius: 10px;
+    background: var(--primary-light);
+    font-size: 1.1rem;
+}
+.event-info-content strong {
+    display: block;
+    color: var(--secondary);
+    font-size: 0.82rem;
+}
+.event-info-content span {
+    display: block;
+    color: var(--muted);
+    font-size: 0.82rem;
+    margin-top: 2px;
+}
+/* =========================================================
+   16. REGISTRATION CARD
+   ========================================================= */
+.registration-card {
+    position: sticky;
+    top: 95px;
+    padding: 25px;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+}
+.registration-card h2 {
+    font-size: 1.3rem;
+}
+.registration-card-price {
+    margin: 18px 0;
+    padding: 16px;
+    border-radius: var(--radius-sm);
+    background: #f9fafb;
+    text-align: center;
+}
+.registration-card-price strong {
+    display: block;
+    color: var(--secondary);
+    font-size: 1.8rem;
+}
+.registration-card-price span {
+    color: var(--muted);
+    font-size: 0.8rem;
+}
+.registration-button {
+    width: 100%;
+    min-height: 50px;
+}
+/* =========================================================
+   17. SLOTS
+   ========================================================= */
+.event-slots-section {
+    margin: 20px 0;
+}
+.event-slots-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 6px;
+}
+.event-slots-header span {
+    color: var(--muted);
+    font-size: 0.8rem;
+}
+.event-slots-header strong {
+    color: var(--secondary);
+    font-size: 0.82rem;
+}
+/* =========================================================
+   18. ORGANIZER INFORMATION
+   ========================================================= */
+.organizer-card {
+    padding: 20px;
+    margin-top: 20px;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+}
+.organizer-card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+.organizer-card-avatar {
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 50%;
+    background: var(--primary-light);
+    color: var(--primary);
+    font-weight: 800;
+}
+.organizer-card-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.organizer-card-header strong {
+    display: block;
+    color: var(--secondary);
+    font-size: 0.9rem;
+}
+.organizer-card-header span {
+    color: var(--muted);
+    font-size: 0.75rem;
+}
+/* =========================================================
+   19. EVENT REGISTRATION SUCCESS
+   ========================================================= */
+.event-registration-success {
+    padding: 25px;
+    margin-bottom: 25px;
+    border: 1px solid #bbf7d0;
+    border-radius: var(--radius);
+    background: var(--success-light);
+    text-align: center;
+}
+.event-registration-success-icon {
+    width: 55px;
+    height: 55px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 12px;
+    border-radius: 50%;
+    background: var(--success);
+    color: white;
+    font-size: 1.4rem;
+}
+.event-registration-success h2 {
+    color: var(--success);
+    font-size: 1.35rem;
+}
+.event-registration-success p {
+    margin-bottom: 18px;
+}
+/* =========================================================
+   20. EVENT SEARCH RESULTS
+   ========================================================= */
+.event-results-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 18px;
+}
+.event-results-header p {
+    margin: 0;
+    font-size: 0.85rem;
+}
+.event-sort {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.event-sort label {
+    color: var(--muted);
+    font-size: 0.78rem;
+}
+.event-sort select {
+    min-height: 38px;
+    padding: 6px 10px;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    background: white;
+    outline: none;
+}
+/* =========================================================
+   21. EVENT STATUS
+   ========================================================= */
+.event-status {
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 9px;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 700;
+}
+.event-status.live {
+    background: var(--success-light);
+    color: var(--success);
+}
+.event-status.draft {
+    background: #f3f4f6;
+    color: #4b5563;
+}
+.event-status.closed {
+    background: var(--danger-light);
+    color: var(--danger);
+}
+.event-status.upcoming {
+    background: var(--primary-light);
+    color: var(--primary);
+}
+/* =========================================================
+   22. ORGANIZER EVENT CARD
+   ========================================================= */
+.organizer-event-card {
+    overflow: hidden;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+}
+.organizer-event-image {
+    height: 180px;
+    overflow: hidden;
+    background: #eef2f7;
+}
+.organizer-event-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.organizer-event-content {
+    padding: 20px;
+}
+.organizer-event-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+}
+.organizer-event-content h3 {
+    margin-bottom: 6px;
+    font-size: 1.05rem;
+}
+.organizer-event-meta {
+    display: grid;
+    gap: 5px;
+    margin: 12px 0;
+    color: var(--muted);
+    font-size: 0.78rem;
+}
+.organizer-event-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+}
+/* =========================================================
+   23. EVENT FORM
+   ========================================================= */
+.event-form-card {
+    max-width: 850px;
+    margin: 0 auto;
+    padding: 30px;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+}
+.event-form-section {
+    padding-bottom: 25px;
+    margin-bottom: 25px;
+    border-bottom: 1px solid var(--border);
+}
+.event-form-section:last-child {
+    padding-bottom: 0;
+    margin-bottom: 0;
+    border-bottom: 0;
+}
+.event-form-section-title {
+    margin-bottom: 18px;
+}
+.event-form-section-title h2 {
+    margin-bottom: 4px;
+    font-size: 1.15rem;
+}
+.event-form-section-title p {
+    margin: 0;
+    font-size: 0.82rem;
+}
+/* =========================================================
+   24. IMAGE UPLOAD
+   ========================================================= */
+.event-image-upload {
+    position: relative;
+    min-height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 25px;
+    border: 2px dashed #d1d5db;
+    border-radius: var(--radius);
+    background: #fafafa;
+    text-align: center;
+    cursor: pointer;
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease;
+}
+.event-image-upload:hover {
+    border-color: var(--primary);
+    background: var(--primary-light);
+}
+.event-image-upload-icon {
+    font-size: 2rem;
+    margin-bottom: 8px;
+}
+.event-image-upload strong {
+    display: block;
+    color: var(--secondary);
+}
+.event-image-upload span {
+    color: var(--muted);
+    font-size: 0.78rem;
+}
+/* =========================================================
+   25. MOBILE
+   ========================================================= */
+@media (max-width: 1000px) {
+    .events-page-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+    .event-detail-layout {
+        grid-template-columns: 1fr;
+    }
+    .registration-card {
+        position: static;
+    }
+}
+@media (max-width: 700px) {
+    .events-page-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .events-page-grid {
+        grid-template-columns: 1fr;
+    }
+    .event-filters {
+        align-items: stretch;
+        flex-direction: column;
+    }
+    .event-filter-group {
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .event-filter-input {
+        width: 100%;
+    }
+    .event-search {
+        width: 100%;
+    }
+    .event-info-grid {
+        grid-template-columns: 1fr;
+    }
+    .event-detail-cover,
+    .event-detail-cover img,
+    .event-detail-cover-placeholder {
+        min-height: 260px;
+    }
+    .event-detail-cover-placeholder {
+        font-size: 5rem;
+    }
+    .event-results-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+    .event-sort {
+        width: 100%;
+    }
+    .event-sort select {
+        flex: 1;
+    }
+    .event-form-card {
+        padding: 20px;
+    }
+}
+@media (max-width: 450px) {
+    .event-category-filters {
+        display: grid;
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+    .category-filter {
+        text-align: center;
+    }
+    .events-page-card-footer {
+        align-items: stretch;
+        flex-direction: column;
+    }
+    .events-page-card-footer .btn {
+        width: 100%;
+    }
+}

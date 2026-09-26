@@ -1,0 +1,169 @@
+{% extends "base.html" %}
+
+{% block title %}
+Cameroon Tech Meetup | EventLink CM
+{% endblock %}
+
+
+{% block content %}
+
+<section class="section">
+
+    <div class="container event-detail-layout">
+
+
+        <div class="event-detail-poster event-purple">
+
+            <span>
+                TECH
+            </span>
+
+            <div>
+
+                <strong>
+                    12
+                </strong>
+
+                <small>
+                    OCTOBER
+                </small>
+
+            </div>
+
+        </div>
+
+
+        <div class="event-detail-content">
+
+            <span class="free-badge">
+                FREE TICKET
+            </span>
+
+
+            <h1>
+                Cameroon Tech Meetup
+            </h1>
+
+
+            <p class="large-text">
+
+                A community meetup where students,
+                developers and technology enthusiasts
+                can connect, learn and share ideas.
+
+            </p>
+
+
+            <div class="event-information">
+
+                <div>
+                    <span>📅</span>
+                    <strong>
+                        12 October 2026
+                    </strong>
+                </div>
+
+                <div>
+                    <span>🕒</span>
+                    <strong>
+                        10:00 AM – 2:00 PM
+                    </strong>
+                </div>
+
+                <div>
+                    <span>📍</span>
+                    <strong>
+                        Yaoundé, Cameroon
+                    </strong>
+                </div>
+
+                <div>
+                    <span>👥</span>
+                    <strong>
+                        58 / 100 registered
+                    </strong>
+                </div>
+
+            </div>
+
+
+            <button class="btn btn-primary btn-large"
+                    id="registerEventButton">
+
+                Register for Free
+
+            </button>
+
+
+            <p class="form-message"
+               id="registrationMessage">
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<section class="section">
+
+    <div class="container two-column">
+
+        <div class="content-card">
+
+            <h2>
+                About the Event
+            </h2>
+
+            <p>
+
+                Join other members of the community
+                for an interactive technology meetup.
+
+                Participants will be able to meet
+                other people, exchange ideas and
+                discover new opportunities.
+
+            </p>
+
+        </div>
+
+
+        <div class="content-card">
+
+            <h2>
+                Your Ticket
+            </h2>
+
+            <p>
+
+                Registration is currently free.
+
+                After successful registration,
+                your ticket will appear in your
+                participant dashboard.
+
+            </p>
+
+            <p>
+                Your ticket will contain a QR code
+                used during event check-in.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}
+
+
+{% block extra_js %}
+
+<script src="{% static 'js/events.js' %}">
+</script>
+
+{% endblock %}

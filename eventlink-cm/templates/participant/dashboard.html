@@ -1,0 +1,310 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Participant Dashboard | EventLink CM{% endblock %}
+{% block content %}
+<section class="section">
+    <div class="container">
+        <!-- Welcome Header -->
+        <div class="dashboard-header">
+            <div>
+                <span class="eyebrow">
+                    PARTICIPANT DASHBOARD
+                </span>
+                <h1>
+                    Welcome back,
+                    {{ user.first_name|default:user.username }} 👋
+                </h1>
+                <p>
+                    Discover events, manage your tickets and keep
+                    track of the events you plan to attend.
+                </p>
+            </div>
+            <div>
+                <a
+                    href="{% url 'participant_events' %}"
+                    class="btn btn-primary">
+                    🔎 Explore Events
+                </a>
+            </div>
+        </div>
+        <!-- Statistics -->
+        <div class="stats-grid">
+            <!-- Registered Events -->
+            <div class="stat-card">
+                <div class="stat-label">
+                    My Events
+                </div>
+                <div class="stat-number">
+                    {{ registered_events|default:"0" }}
+                </div>
+                <p>
+                    Events you registered for
+                </p>
+            </div>
+            <!-- Tickets -->
+            <div class="stat-card">
+                <div class="stat-label">
+                    My Tickets
+                </div>
+                <div class="stat-number">
+                    {{ total_tickets|default:"0" }}
+                </div>
+                <p>
+                    Available event tickets
+                </p>
+            </div>
+            <!-- Upcoming -->
+            <div class="stat-card">
+                <div class="stat-label">
+                    Upcoming
+                </div>
+                <div class="stat-number">
+                    {{ upcoming_events|default:"0" }}
+                </div>
+                <p>
+                    Events coming soon
+                </p>
+            </div>
+            <!-- Attended -->
+            <div class="stat-card">
+                <div class="stat-label">
+                    Attended
+                </div>
+                <div class="stat-number">
+                    {{ attended_events|default:"0" }}
+                </div>
+                <p>
+                    Events you attended
+                </p>
+            </div>
+        </div>
+        <!-- Quick Actions -->
+        <div class="card">
+            <div class="section-title">
+                <h2>
+                    Quick Actions
+                </h2>
+                <p>
+                    Everything you need is just one click away.
+                </p>
+            </div>
+            <div class="quick-actions">
+                <a
+                    href="{% url 'participant_events' %}"
+                    class="btn btn-primary">
+                    🔎 Explore Events
+                </a>
+                <a
+                    href="{% url 'participant_tickets' %}"
+                    class="btn btn-secondary">
+                    🎟️ My Tickets
+                </a>
+                <a
+                    href="{% url 'participant_profile' %}"
+                    class="btn btn-outline">
+                    👤 My Profile
+                </a>
+                <a
+                    href="{% url 'participant_notifications' %}"
+                    class="btn btn-outline">
+                    🔔 Notifications
+                </a>
+            </div>
+        </div>
+        <!-- Upcoming Events -->
+        <div class="card">
+            <div class="section-title">
+                <h2>
+                    My Upcoming Events
+                </h2>
+                <p>
+                    Events you have registered for.
+                </p>
+            </div>
+            {% if upcoming_event_list %}
+                <div class="events-grid">
+                    {% for event in upcoming_event_list %}
+                        <article class="event-card">
+                            <!-- Poster -->
+                            <div class="event-image">
+                                {% if event.poster %}
+                                    <img
+                                        src="{{ event.poster.url }}"
+                                        alt="{{ event.title }}">
+                                {% else %}
+                                    <div class="event-placeholder">
+                                        🎪
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <!-- Content -->
+                            <div class="event-content">
+                                <span class="event-category">
+                                    {{ event.category|default:"Event" }}
+                                </span>
+                                <h2 class="event-title">
+                                    {{ event.title }}
+                                </h2>
+                                <p class="event-description">
+                                    {{ event.description|truncatewords:18 }}
+                                </p>
+                                <p class="event-info">
+                                    📅
+                                    <strong>Date:</strong>
+                                    {{ event.date }}
+                                </p>
+                                <p class="event-info">
+                                    🕐
+                                    <strong>Time:</strong>
+                                    {{ event.time }}
+                                </p>
+                                <p class="event-info">
+                                    📍
+                                    <strong>Location:</strong>
+                                    {{ event.location }}
+                                </p>
+                                <div class="event-footer">
+                                    <a
+                                        href="{% url 'participant_event_detail' event.id %}"
+                                        class="btn btn-primary">
+                                        View Event
+                                    </a>
+                                </div>
+                            </div>
+                        </article>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <!-- Empty State -->
+                <div class="empty-state">
+                    <div class="empty-icon">
+                        🎟️
+                    </div>
+                    <h3>
+                        No Upcoming Events
+                    </h3>
+                    <p>
+                        You haven't registered for an upcoming event yet.
+                        Explore available events and find something
+                        interesting.
+                    </p>
+                    <a
+                        href="{% url 'participant_events' %}"
+                        class="btn btn-primary">
+                        Explore Events
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+        <!-- Recent Tickets -->
+        <div class="card">
+            <div class="section-title">
+                <h2>
+                    Recent Tickets
+                </h2>
+                <p>
+                    Your most recent event tickets.
+                </p>
+            </div>
+            {% if recent_tickets %}
+                <div class="ticket-list">
+                    {% for ticket in recent_tickets %}
+                        <div class="list-item">
+                            <div>
+                                <h3>
+                                    {{ ticket.event.title }}
+                                </h3>
+                                <p>
+                                    Ticket:
+                                    <strong>
+                                        {{ ticket.code }}
+                                    </strong>
+                                </p>
+                            </div>
+                            <div>
+                                {% if ticket.attended %}
+                                    <span class="ticket-status attended">
+                                        ✓ Attended
+                                    </span>
+                                {% else %}
+                                    <span class="ticket-status valid">
+                                        Valid
+                                    </span>
+                                {% endif %}
+                                <a
+                                    href="{% url 'participant_ticket_detail' ticket.id %}"
+                                    class="btn btn-secondary">
+                                    View Ticket
+                                </a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <div class="empty-icon">
+                        🎫
+                    </div>
+                    <h3>
+                        No Tickets Yet
+                    </h3>
+                    <p>
+                        Your tickets will appear here after you
+                        register for an event.
+                    </p>
+                    <a
+                        href="{% url 'participant_events' %}"
+                        class="btn btn-primary">
+                        Find an Event
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+        <!-- Helpful Information -->
+        <div class="card">
+            <div class="section-title">
+                <h2>
+                    How EventLink CM Works
+                </h2>
+                <p>
+                    Register for an event in a few simple steps.
+                </p>
+            </div>
+            <div class="quick-actions">
+                <div class="ticket-option">
+                    <span class="ticket-status valid">
+                        1
+                    </span>
+                    <span>
+                        Browse available events.
+                    </span>
+                </div>
+                <div class="ticket-option">
+                    <span class="ticket-status valid">
+                        2
+                    </span>
+                    <span>
+                        Register for an event.
+                    </span>
+                </div>
+                <div class="ticket-option">
+                    <span class="ticket-status valid">
+                        3
+                    </span>
+                    <span>
+                        Receive your free ticket.
+                    </span>
+                </div>
+                <div class="ticket-option">
+                    <span class="ticket-status valid">
+                        4
+                    </span>
+                    <span>
+                        Show your ticket QR code at the event.
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,317 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Create Event | EventLink CM{% endblock %}
+{% block content %}
+<section class="section">
+    <div class="container">
+        <!-- Page Header -->
+        <div class="section-title">
+            <span class="eyebrow">
+                ORGANIZER
+            </span>
+            <h1>
+                Create a New Event
+            </h1>
+            <p>
+                Create an event that participants can discover
+                and register for on EventLink CM.
+            </p>
+        </div>
+        <!-- Create Event Card -->
+        <div class="card">
+            <form
+                method="POST"
+                enctype="multipart/form-data">
+                {% csrf_token %}
+                <!-- Event Title -->
+                <div class="form-group">
+                    <label for="title">
+                        Event Title
+                    </label>
+                    <input
+                        type="text"
+                        id="title"
+                        name="title"
+                        class="form-control"
+                        placeholder="Example: Cameroon Tech Conference 2026"
+                        maxlength="200"
+                        required>
+                    <small>
+                        Give your event a clear and memorable name.
+                    </small>
+                </div>
+                <!-- Description -->
+                <div class="form-group">
+                    <label for="description">
+                        Event Description
+                    </label>
+                    <textarea
+                        id="description"
+                        name="description"
+                        class="form-control"
+                        rows="6"
+                        maxlength="2000"
+                        placeholder="Describe what your event is about..."
+                        required></textarea>
+                    <small>
+                        Explain what participants can expect from the event.
+                    </small>
+                </div>
+                <!-- Category and Capacity -->
+                <div class="form-grid">
+                    <!-- Category -->
+                    <div class="form-group">
+                        <label for="category">
+                            Event Category
+                        </label>
+                        <select
+                            id="category"
+                            name="category"
+                            class="form-control"
+                            required>
+                            <option value="">
+                                Select a category
+                            </option>
+                            <option value="Education">
+                                Education
+                            </option>
+                            <option value="Technology">
+                                Technology
+                            </option>
+                            <option value="Business">
+                                Business
+                            </option>
+                            <option value="Entertainment">
+                                Entertainment
+                            </option>
+                            <option value="Sports">
+                                Sports
+                            </option>
+                            <option value="Community">
+                                Community
+                            </option>
+                            <option value="Workshop">
+                                Workshop
+                            </option>
+                            <option value="Conference">
+                                Conference
+                            </option>
+                            <option value="Other">
+                                Other
+                            </option>
+                        </select>
+                    </div>
+                    <!-- Capacity -->
+                    <div class="form-group">
+                        <label for="capacity">
+                            Registration Slots
+                        </label>
+                        <input
+                            type="number"
+                            id="capacity"
+                            name="capacity"
+                            class="form-control"
+                            min="1"
+                            max="100000"
+                            placeholder="Example: 100"
+                            required>
+                        <small>
+                            Maximum number of participants.
+                        </small>
+                    </div>
+                </div>
+                <!-- Date and Time -->
+                <div class="form-grid">
+                    <!-- Date -->
+                    <div class="form-group">
+                        <label for="date">
+                            Event Date
+                        </label>
+                        <input
+                            type="date"
+                            id="date"
+                            name="date"
+                            class="form-control"
+                            required>
+                    </div>
+                    <!-- Time -->
+                    <div class="form-group">
+                        <label for="time">
+                            Event Time
+                        </label>
+                        <input
+                            type="time"
+                            id="time"
+                            name="time"
+                            class="form-control"
+                            required>
+                    </div>
+                </div>
+                <!-- Location -->
+                <div class="form-group">
+                    <label for="location">
+                        Event Location
+                    </label>
+                    <input
+                        type="text"
+                        id="location"
+                        name="location"
+                        class="form-control"
+                        maxlength="255"
+                        placeholder="Example: ICT University, Yaoundé"
+                        required>
+                    <small>
+                        Enter the physical location or venue of the event.
+                    </small>
+                </div>
+                <!-- Event Poster -->
+                <div class="form-group">
+                    <label for="poster">
+                        Event Poster
+                    </label>
+                    <input
+                        type="file"
+                        id="poster"
+                        name="poster"
+                        class="form-control"
+                        accept="image/png,image/jpeg,image/webp">
+                    <small>
+                        Recommended formats: JPG, PNG or WebP.
+                    </small>
+                </div>
+                <!-- Poster Preview -->
+                <div
+                    id="poster-preview-container"
+                    class="poster-preview"
+                    style="display: none;">
+                    <h3>
+                        Poster Preview
+                    </h3>
+                    <img
+                        id="poster-preview"
+                        src=""
+                        alt="Event poster preview">
+                </div>
+                <!-- Ticket Information -->
+                <div class="card ticket-info-box">
+                    <div class="section-title">
+                        <h2>
+                            🎟️ Ticket Information
+                        </h2>
+                        <p>
+                            EventLink CM currently starts with free
+                            event registration.
+                        </p>
+                    </div>
+                    <div class="ticket-option">
+                        <input
+                            type="radio"
+                            id="free_ticket"
+                            name="ticket_type"
+                            value="free"
+                            checked>
+                        <label for="free_ticket">
+                            <strong>
+                                Free Ticket
+                            </strong>
+                            <span>
+                                Participants can register without payment.
+                            </span>
+                        </label>
+                    </div>
+                </div>
+                <!-- Event Visibility -->
+                <div class="card">
+                    <div class="section-title">
+                        <h2>
+                            Event Visibility
+                        </h2>
+                        <p>
+                            Choose what happens after you submit your event.
+                        </p>
+                    </div>
+                    <div class="ticket-option">
+                        <input
+                            type="radio"
+                            id="draft"
+                            name="action"
+                            value="draft"
+                            checked>
+                        <label for="draft">
+                            <strong>
+                                Save as Draft
+                            </strong>
+                            <span>
+                                Keep the event private while you continue
+                                preparing it.
+                            </span>
+                        </label>
+                    </div>
+                    <div class="ticket-option">
+                        <input
+                            type="radio"
+                            id="publish"
+                            name="action"
+                            value="publish">
+                        <label for="publish">
+                            <strong>
+                                Publish Event
+                            </strong>
+                            <span>
+                                Make the event available for participants
+                                to discover and register.
+                            </span>
+                        </label>
+                    </div>
+                </div>
+                <!-- Form Buttons -->
+                <div class="form-actions">
+                    <a
+                        href="{% url 'organizer_events' %}"
+                        class="btn btn-outline">
+                        Cancel
+                    </a>
+                    <button
+                        type="submit"
+                        class="btn btn-primary">
+                        Create Event
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}
+{% block extra_js %}
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const posterInput = document.getElementById("poster");
+    const previewContainer =
+        document.getElementById("poster-preview-container");
+    const preview =
+        document.getElementById("poster-preview");
+    if (posterInput) {
+        posterInput.addEventListener("change", function () {
+            const file = this.files[0];
+            if (!file) {
+                previewContainer.style.display = "none";
+                preview.src = "";
+                return;
+            }
+            if (!file.type.startsWith("image/")) {
+                alert("Please select an image file.");
+                posterInput.value = "";
+                previewContainer.style.display = "none";
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = function (event) {
+                preview.src = event.target.result;
+                previewContainer.style.display = "block";
+            };
+            reader.readAsDataURL(file);
+        });
+    }
+});
+</script>
+{% endblock %}

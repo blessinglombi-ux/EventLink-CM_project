@@ -1,0 +1,364 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Edit Event | EventLink CM{% endblock %}
+{% block content %}
+<section class="section">
+    <div class="container">
+        <!-- Page Header -->
+        <div class="section-title">
+            <span class="eyebrow">
+                ORGANIZER
+            </span>
+            <h1>
+                Edit Event
+            </h1>
+            <p>
+                Update your event information and keep participants informed.
+            </p>
+        </div>
+        <!-- Edit Event Card -->
+        <div class="card">
+            <form
+                method="POST"
+                enctype="multipart/form-data">
+                {% csrf_token %}
+                <!-- Event Title -->
+                <div class="form-group">
+                    <label for="title">
+                        Event Title
+                    </label>
+                    <input
+                        type="text"
+                        id="title"
+                        name="title"
+                        class="form-control"
+                        value="{{ event.title }}"
+                        maxlength="200"
+                        required>
+                </div>
+                <!-- Description -->
+                <div class="form-group">
+                    <label for="description">
+                        Event Description
+                    </label>
+                    <textarea
+                        id="description"
+                        name="description"
+                        class="form-control"
+                        rows="6"
+                        maxlength="2000"
+                        required>{{ event.description }}</textarea>
+                </div>
+                <!-- Category and Capacity -->
+                <div class="form-grid">
+                    <!-- Category -->
+                    <div class="form-group">
+                        <label for="category">
+                            Event Category
+                        </label>
+                        <select
+                            id="category"
+                            name="category"
+                            class="form-control"
+                            required>
+                            <option value="Education"
+                                {% if event.category == "Education" %}
+                                    selected
+                                {% endif %}>
+                                Education
+                            </option>
+                            <option value="Technology"
+                                {% if event.category == "Technology" %}
+                                    selected
+                                {% endif %}>
+                                Technology
+                            </option>
+                            <option value="Business"
+                                {% if event.category == "Business" %}
+                                    selected
+                                {% endif %}>
+                                Business
+                            </option>
+                            <option value="Entertainment"
+                                {% if event.category == "Entertainment" %}
+                                    selected
+                                {% endif %}>
+                                Entertainment
+                            </option>
+                            <option value="Sports"
+                                {% if event.category == "Sports" %}
+                                    selected
+                                {% endif %}>
+                                Sports
+                            </option>
+                            <option value="Community"
+                                {% if event.category == "Community" %}
+                                    selected
+                                {% endif %}>
+                                Community
+                            </option>
+                            <option value="Workshop"
+                                {% if event.category == "Workshop" %}
+                                    selected
+                                {% endif %}>
+                                Workshop
+                            </option>
+                            <option value="Conference"
+                                {% if event.category == "Conference" %}
+                                    selected
+                                {% endif %}>
+                                Conference
+                            </option>
+                            <option value="Other"
+                                {% if event.category == "Other" %}
+                                    selected
+                                {% endif %}>
+                                Other
+                            </option>
+                        </select>
+                    </div>
+                    <!-- Capacity -->
+                    <div class="form-group">
+                        <label for="capacity">
+                            Registration Slots
+                        </label>
+                        <input
+                            type="number"
+                            id="capacity"
+                            name="capacity"
+                            class="form-control"
+                            value="{{ event.capacity }}"
+                            min="1"
+                            max="100000"
+                            required>
+                    </div>
+                </div>
+                <!-- Date and Time -->
+                <div class="form-grid">
+                    <!-- Date -->
+                    <div class="form-group">
+                        <label for="date">
+                            Event Date
+                        </label>
+                        <input
+                            type="date"
+                            id="date"
+                            name="date"
+                            class="form-control"
+                            value="{{ event.date|date:'Y-m-d' }}"
+                            required>
+                    </div>
+                    <!-- Time -->
+                    <div class="form-group">
+                        <label for="time">
+                            Event Time
+                        </label>
+                        <input
+                            type="time"
+                            id="time"
+                            name="time"
+                            class="form-control"
+                            value="{{ event.time|time:'H:i' }}"
+                            required>
+                    </div>
+                </div>
+                <!-- Location -->
+                <div class="form-group">
+                    <label for="location">
+                        Event Location
+                    </label>
+                    <input
+                        type="text"
+                        id="location"
+                        name="location"
+                        class="form-control"
+                        value="{{ event.location }}"
+                        maxlength="255"
+                        required>
+                </div>
+                <!-- Current Poster -->
+                {% if event.poster %}
+                    <div class="form-group">
+                        <label>
+                            Current Event Poster
+                        </label>
+                        <div class="current-poster">
+                            <img
+                                src="{{ event.poster.url }}"
+                                alt="{{ event.title }} poster">
+                        </div>
+                    </div>
+                {% endif %}
+                <!-- Replace Poster -->
+                <div class="form-group">
+                    <label for="poster">
+                        Replace Event Poster
+                    </label>
+                    <input
+                        type="file"
+                        id="poster"
+                        name="poster"
+                        class="form-control"
+                        accept="image/png,image/jpeg,image/webp">
+                    <small>
+                        Leave this empty if you want to keep the
+                        current poster.
+                    </small>
+                </div>
+                <!-- New Poster Preview -->
+                <div
+                    id="poster-preview-container"
+                    class="poster-preview"
+                    style="display: none;">
+                    <h3>
+                        New Poster Preview
+                    </h3>
+                    <img
+                        id="poster-preview"
+                        src=""
+                        alt="New event poster preview">
+                </div>
+                <!-- Ticket Information -->
+                <div class="card ticket-info-box">
+                    <div class="section-title">
+                        <h2>
+                            🎟️ Ticket Type
+                        </h2>
+                        <p>
+                            EventLink CM currently supports free tickets.
+                        </p>
+                    </div>
+                    <div class="ticket-option">
+                        <input
+                            type="radio"
+                            id="free_ticket"
+                            name="ticket_type"
+                            value="free"
+                            checked>
+                        <label for="free_ticket">
+                            <strong>
+                                Free Ticket
+                            </strong>
+                            <span>
+                                Participants can register without payment.
+                            </span>
+                        </label>
+                    </div>
+                </div>
+                <!-- Event Status -->
+                <div class="card">
+                    <div class="section-title">
+                        <h2>
+                            Event Status
+                        </h2>
+                        <p>
+                            Choose whether participants can currently
+                            discover your event.
+                        </p>
+                    </div>
+                    <div class="ticket-option">
+                        <input
+                            type="radio"
+                            id="published"
+                            name="status"
+                            value="published"
+                            {% if event.is_published %}
+                                checked
+                            {% endif %}>
+                        <label for="published">
+                            <strong>
+                                Published
+                            </strong>
+                            <span>
+                                Participants can view and register
+                                for this event.
+                            </span>
+                        </label>
+                    </div>
+                    <div class="ticket-option">
+                        <input
+                            type="radio"
+                            id="draft"
+                            name="status"
+                            value="draft"
+                            {% if not event.is_published %}
+                                checked
+                            {% endif %}>
+                        <label for="draft">
+                            <strong>
+                                Draft
+                            </strong>
+                            <span>
+                                Keep the event hidden while you
+                                continue preparing it.
+                            </span>
+                        </label>
+                    </div>
+                </div>
+                <!-- Form Buttons -->
+                <div class="form-actions">
+                    <a
+                        href="{% url 'organizer_events' %}"
+                        class="btn btn-outline">
+                        Cancel
+                    </a>
+                    <button
+                        type="submit"
+                        class="btn btn-primary">
+                        Save Changes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}
+{% block extra_js %}
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const posterInput =
+        document.getElementById("poster");
+    const previewContainer =
+        document.getElementById(
+            "poster-preview-container"
+        );
+    const preview =
+        document.getElementById(
+            "poster-preview"
+        );
+    if (posterInput) {
+        posterInput.addEventListener(
+            "change",
+            function () {
+                const file = this.files[0];
+                if (!file) {
+                    previewContainer.style.display =
+                        "none";
+                    preview.src = "";
+                    return;
+                }
+                if (!file.type.startsWith("image/")) {
+                    alert(
+                        "Please select a valid image file."
+                    );
+                    posterInput.value = "";
+                    previewContainer.style.display =
+                        "none";
+                    return;
+                }
+                const reader =
+                    new FileReader();
+                reader.onload =
+                    function (event) {
+                        preview.src =
+                            event.target.result;
+                        previewContainer.style.display =
+                            "block";
+                    };
+                reader.readAsDataURL(file);
+            }
+        );
+    }
+});
+</script>
+{% endblock %}

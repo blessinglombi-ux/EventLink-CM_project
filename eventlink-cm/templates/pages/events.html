@@ -1,0 +1,273 @@
+{% extends "base.html" %}
+
+{% block title %}
+Discover Events | EventLink CM
+{% endblock %}
+
+
+{% block content %}
+
+<section class="page-header">
+
+    <div class="container">
+
+        <span class="eyebrow">
+            DISCOVER
+        </span>
+
+        <h1>
+            Find your next event.
+        </h1>
+
+        <p>
+            Explore available events and
+            reserve your free ticket.
+        </p>
+
+    </div>
+
+</section>
+
+
+<section class="section">
+
+    <div class="container">
+
+
+        <div class="event-toolbar">
+
+            <input type="search"
+                   id="eventSearch"
+                   class="search-input"
+                   placeholder="Search events...">
+
+
+            <select id="categoryFilter"
+                    class="select-input">
+
+                <option value="">
+                    All Categories
+                </option>
+
+                <option value="Technology">
+                    Technology
+                </option>
+
+                <option value="Education">
+                    Education
+                </option>
+
+                <option value="Community">
+                    Community
+                </option>
+
+                <option value="Entertainment">
+                    Entertainment
+                </option>
+
+            </select>
+
+        </div>
+
+
+
+        <div class="event-grid"
+             id="eventGrid">
+
+
+            <article class="event-card"
+                     data-title="Cameroon Tech Meetup"
+                     data-category="Technology">
+
+                <div class="event-image event-purple">
+
+                    <span>
+                        TECH
+                    </span>
+
+                    <div>
+                        <strong>12</strong>
+                        <small>OCT</small>
+                    </div>
+
+                </div>
+
+
+                <div class="event-content">
+
+                    <span class="free-badge">
+                        FREE
+                    </span>
+
+                    <h3>
+                        Cameroon Tech Meetup
+                    </h3>
+
+                    <p>
+                        📍 Yaoundé
+                    </p>
+
+                    <p>
+                        🕒 10:00 AM
+                    </p>
+
+
+                    <div class="event-card-footer">
+
+                        <span>
+                            42 spots left
+                        </span>
+
+                        <a href="/events/1/">
+                            View →
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+
+            <article class="event-card"
+                     data-title="Creative Students Day"
+                     data-category="Education">
+
+                <div class="event-image event-pink">
+
+                    <span>
+                        CREATE
+                    </span>
+
+                    <div>
+                        <strong>19</strong>
+                        <small>OCT</small>
+                    </div>
+
+                </div>
+
+
+                <div class="event-content">
+
+                    <span class="free-badge">
+                        FREE
+                    </span>
+
+                    <h3>
+                        Creative Students Day
+                    </h3>
+
+                    <p>
+                        📍 Douala
+                    </p>
+
+                    <p>
+                        🕒 1:00 PM
+                    </p>
+
+
+                    <div class="event-card-footer">
+
+                        <span>
+                            75 spots left
+                        </span>
+
+                        <a href="/events/2/">
+                            View →
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+
+            <article class="event-card"
+                     data-title="Community Game Night"
+                     data-category="Entertainment">
+
+                <div class="event-image event-green">
+
+                    <span>
+                        GAME
+                    </span>
+
+                    <div>
+                        <strong>26</strong>
+                        <small>OCT</small>
+                    </div>
+
+                </div>
+
+
+                <div class="event-content">
+
+                    <span class="free-badge">
+                        FREE
+                    </span>
+
+                    <h3>
+                        Community Game Night
+                    </h3>
+
+                    <p>
+                        📍 Buea
+                    </p>
+
+                    <p>
+                        🕒 5:30 PM
+                    </p>
+
+
+                    <div class="event-card-footer">
+
+                        <span>
+                            28 spots left
+                        </span>
+
+                        <a href="/events/3/">
+                            View →
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+        </div>
+
+
+        <div id="emptyEvents"
+             class="empty-state hidden">
+
+            <div>
+                🔎
+            </div>
+
+            <h3>
+                No events found
+            </h3>
+
+            <p>
+                Try another search or category.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}
+
+
+{% block extra_js %}
+
+<script src="{% static 'js/events.js' %}">
+</script>
+
+{% endblock %}

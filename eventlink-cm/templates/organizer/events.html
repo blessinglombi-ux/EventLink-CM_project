@@ -1,0 +1,265 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}My Events | EventLink CM{% endblock %}
+{% block content %}
+<section class="section">
+    <div class="container">
+        <!-- Page Header -->
+        <div class="dashboard-header">
+            <div>
+                <span class="eyebrow">
+                    ORGANIZER
+                </span>
+                <h1>
+                    My Events
+                </h1>
+                <p>
+                    Create, view and manage all your EventLink CM events.
+                </p>
+            </div>
+            <div>
+                <a
+                    href="{% url 'create_event' %}"
+                    class="btn btn-primary">
+                    + Create Event
+                </a>
+            </div>
+        </div>
+        <!-- Event Statistics -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">
+                    All Events
+                </div>
+                <div class="stat-number">
+                    {{ total_events|default:"0" }}
+                </div>
+                <p>
+                    Events you created
+                </p>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">
+                    Published
+                </div>
+                <div class="stat-number">
+                    {{ published_events|default:"0" }}
+                </div>
+                <p>
+                    Visible to participants
+                </p>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">
+                    Drafts
+                </div>
+                <div class="stat-number">
+                    {{ draft_events|default:"0" }}
+                </div>
+                <p>
+                    Events still being prepared
+                </p>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">
+                    Registrations
+                </div>
+                <div class="stat-number">
+                    {{ total_registrations|default:"0" }}
+                </div>
+                <p>
+                    Total participants
+                </p>
+            </div>
+        </div>
+        <!-- Search and Filter -->
+        <div class="card">
+            <div class="section-title">
+                <h2>
+                    Find an Event
+                </h2>
+                <p>
+                    Search through your events.
+                </p>
+            </div>
+            <form method="GET">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="search">
+                            Search
+                        </label>
+                        <input
+                            type="search"
+                            id="search"
+                            name="search"
+                            class="form-control"
+                            value="{{ request.GET.search }}"
+                            placeholder="Search event title...">
+                    </div>
+                    <div class="form-group">
+                        <label for="status">
+                            Status
+                        </label>
+                        <select
+                            id="status"
+                            name="status"
+                            class="form-control">
+                            <option value="">
+                                All Events
+                            </option>
+                            <option value="published"
+                                {% if request.GET.status == "published" %}
+                                    selected
+                                {% endif %}>
+                                Published
+                            </option>
+                            <option value="draft"
+                                {% if request.GET.status == "draft" %}
+                                    selected
+                                {% endif %}>
+                                Draft
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <button
+                    type="submit"
+                    class="btn btn-secondary">
+                    Search
+                </button>
+            </form>
+        </div>
+        <!-- Events -->
+        {% if events %}
+            <div class="events-grid">
+                {% for event in events %}
+                    <article class="event-card">
+                        <!-- Event Poster -->
+                        <div class="event-image">
+                            {% if event.poster %}
+                                <img
+                                    src="{{ event.poster.url }}"
+                                    alt="{{ event.title }}">
+                            {% else %}
+                                <div class="event-placeholder">
+                                    🎪
+                                </div>
+                            {% endif %}
+                        </div>
+                        <!-- Event Content -->
+                        <div class="event-content">
+                            <!-- Status -->
+                            <div class="event-status">
+                                {% if event.is_published %}
+                                    <span class="ticket-status attended">
+                                        Published
+                                    </span>
+                                {% else %}
+                                    <span class="ticket-status not-attended">
+                                        Draft
+                                    </span>
+                                {% endif %}
+                            </div>
+                            <!-- Category -->
+                            <span class="event-category">
+                                {{ event.category|default:"Event" }}
+                            </span>
+                            <!-- Title -->
+                            <h2 class="event-title">
+                                {{ event.title }}
+                            </h2>
+                            <!-- Description -->
+                            <p class="event-description">
+                                {{ event.description|truncatewords:18 }}
+                            </p>
+                            <!-- Date -->
+                            <p class="event-info">
+                                📅
+                                <strong>Date:</strong>
+                                {{ event.date }}
+                            </p>
+                            <!-- Time -->
+                            <p class="event-info">
+                                🕐
+                                <strong>Time:</strong>
+                                {{ event.time }}
+                            </p>
+                            <!-- Location -->
+                            <p class="event-info">
+                                📍
+                                <strong>Location:</strong>
+                                {{ event.location }}
+                            </p>
+                            <!-- Capacity -->
+                            <p class="event-info">
+                                👥
+                                <strong>Participants:</strong>
+                                {{ event.registered_count|default:"0" }}
+                                /
+                                {{ event.capacity|default:"0" }}
+                            </p>
+                            <!-- Progress -->
+                            <div class="event-progress">
+                                {% if event.capacity %}
+                                    <div class="progress">
+                                        <div
+                                            class="progress-bar"
+                                            style="width: {% widthratio event.registered_count event.capacity 100 %}%;">
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <!-- Actions -->
+                            <div class="event-footer">
+                                <a
+                                    href="{% url 'event_detail' event.id %}"
+                                    class="btn btn-secondary">
+                                    View
+                                </a>
+                                <a
+                                    href="{% url 'edit_event' event.id %}"
+                                    class="btn btn-primary">
+                                    Edit
+                                </a>
+                            </div>
+                            <!-- Participants -->
+                            <div class="event-footer">
+                                <a
+                                    href="{% url 'organizer_participants' %}?event={{ event.id }}"
+                                    class="btn btn-outline">
+                                    👥 Participants
+                                </a>
+                                <a
+                                    href="{% url 'organizer_attendance' %}?event={{ event.id }}"
+                                    class="btn btn-outline">
+                                    ✓ Attendance
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+                {% endfor %}
+            </div>
+        {% else %}
+            <!-- Empty State -->
+            <div class="card">
+                <div class="empty-state">
+                    <div class="empty-icon">
+                        🎪
+                    </div>
+                    <h2>
+                        No Events Found
+                    </h2>
+                    <p>
+                        You haven't created an event matching your search.
+                    </p>
+                    <a
+                        href="{% url 'create_event' %}"
+                        class="btn btn-primary">
+                        + Create Your First Event
+                    </a>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

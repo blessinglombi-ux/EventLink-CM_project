@@ -1,0 +1,420 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Reports | EventLink CM{% endblock %}
+{% block content %}
+<section class="section">
+    <div class="container">
+        <!-- Page Header -->
+        <div class="dashboard-header">
+            <div>
+                <span class="eyebrow">
+                    ORGANIZER
+                </span>
+                <h1>
+                    Event Reports
+                </h1>
+                <p>
+                    Review registrations and attendance
+                    across your EventLink CM events.
+                </p>
+            </div>
+            <div>
+                <a
+                    href="{% url 'organizer_events' %}"
+                    class="btn btn-outline">
+                    ← My Events
+                </a>
+            </div>
+        </div>
+        <!-- Report Statistics -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">
+                    Total Events
+                </div>
+                <div class="stat-number">
+                    {{ total_events|default:"0" }}
+                </div>
+                <p>
+                    Events created
+                </p>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">
+                    Registrations
+                </div>
+                <div class="stat-number">
+                    {{ total_registrations|default:"0" }}
+                </div>
+                <p>
+                    Total registrations
+                </p>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">
+                    Attended
+                </div>
+                <div class="stat-number">
+                    {{ total_attended|default:"0" }}
+                </div>
+                <p>
+                    Participants checked in
+                </p>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">
+                    Attendance Rate
+                </div>
+                <div class="stat-number">
+                    {{ attendance_rate|default:"0" }}%
+                </div>
+                <p>
+                    Overall attendance
+                </p>
+            </div>
+        </div>
+        <!-- Report Filter -->
+        <div class="card">
+            <div class="section-title">
+                <h2>
+                    Generate Report
+                </h2>
+                <p>
+                    Select an event to view its detailed report.
+                </p>
+            </div>
+            <form method="GET">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="event">
+                            Select Event
+                        </label>
+                        <select
+                            id="event"
+                            name="event"
+                            class="form-control">
+                            <option value="">
+                                All Events
+                            </option>
+                            {% for event in events %}
+                                <option
+                                    value="{{ event.id }}"
+                                    {% if request.GET.event == event.id|stringformat:"s" %}
+                                        selected
+                                    {% endif %}>
+                                    {{ event.title }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="status">
+                            Attendance Status
+                        </label>
+                        <select
+                            id="status"
+                            name="status"
+                            class="form-control">
+                            <option value="">
+                                Everyone
+                            </option>
+                            <option
+                                value="attended"
+                                {% if request.GET.status == "attended" %}
+                                    selected
+                                {% endif %}>
+                                Attended
+                            </option>
+                            <option
+                                value="absent"
+                                {% if request.GET.status == "absent" %}
+                                    selected
+                                {% endif %}>
+                                Absent
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button
+                        type="submit"
+                        class="btn btn-primary">
+                        📊 Generate Report
+                    </button>
+                    <a
+                        href="{% url 'organizer_reports' %}"
+                        class="btn btn-outline">
+                        Clear
+                    </a>
+                </div>
+            </form>
+        </div>
+        <!-- Attendance Overview -->
+        <div class="card">
+            <div class="section-title">
+                <h2>
+                    Attendance Overview
+                </h2>
+                <p>
+                    A summary of participant attendance.
+                </p>
+            </div>
+            <div class="report-chart">
+                <div class="chart-item">
+                    <div class="chart-header">
+                        <strong>
+                            Attended
+                        </strong>
+                        <span>
+                            {{ total_attended|default:"0" }}
+                        </span>
+                    </div>
+                    <div class="progress">
+                        <div
+                            class="progress-bar"
+                            style="width: {{ attendance_rate|default:'0' }}%;">
+                        </div>
+                    </div>
+                </div>
+                <div class="chart-item">
+                    <div class="chart-header">
+                        <strong>
+                            Absent
+                        </strong>
+                        <span>
+                            {{ total_absent|default:"0" }}
+                        </span>
+                    </div>
+                    <div class="progress">
+                        <div
+                            class="progress-bar"
+                            style="width: {{ absence_rate|default:'0' }}%;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Event Report Table -->
+        <div class="card">
+            <div class="section-title">
+                <h2>
+                    Event Performance
+                </h2>
+                <p>
+                    Registration and attendance information
+                    for each event.
+                </p>
+            </div>
+            <div class="table-container">
+                <table class="dashboard-table">
+                    <thead>
+                        <tr>
+                            <th>
+                                #
+                            </th>
+                            <th>
+                                Event
+                            </th>
+                            <th>
+                                Date
+                            </th>
+                            <th>
+                                Capacity
+                            </th>
+                            <th>
+                                Registered
+                            </th>
+                            <th>
+                                Attended
+                            </th>
+                            <th>
+                                Attendance
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for report in event_reports %}
+                            <tr>
+                                <!-- Number -->
+                                <td>
+                                    {{ forloop.counter }}
+                                </td>
+                                <!-- Event -->
+                                <td>
+                                    <strong>
+                                        {{ report.event.title }}
+                                    </strong>
+                                </td>
+                                <!-- Date -->
+                                <td>
+                                    {{ report.event.date|date:"M d, Y" }}
+                                </td>
+                                <!-- Capacity -->
+                                <td>
+                                    {{ report.event.capacity }}
+                                </td>
+                                <!-- Registered -->
+                                <td>
+                                    {{ report.registered }}
+                                </td>
+                                <!-- Attended -->
+                                <td>
+                                    {{ report.attended }}
+                                </td>
+                                <!-- Attendance Rate -->
+                                <td>
+                                    <strong>
+                                        {{ report.attendance_rate|default:"0" }}%
+                                    </strong>
+                                </td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="7">
+                                    <div class="empty-state">
+                                        <div class="empty-icon">
+                                            📊
+                                        </div>
+                                        <h3>
+                                            No Report Data
+                                        </h3>
+                                        <p>
+                                            Reports will appear here once
+                                            participants register for your
+                                            events.
+                                        </p>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- Detailed Attendance -->
+        <div class="card">
+            <div class="section-title">
+                <h2>
+                    Participant Attendance
+                </h2>
+                <p>
+                    Detailed attendance records.
+                </p>
+            </div>
+            <div class="table-container">
+                <table class="dashboard-table">
+                    <thead>
+                        <tr>
+                            <th>
+                                Participant
+                            </th>
+                            <th>
+                                Event
+                            </th>
+                            <th>
+                                Registration Date
+                            </th>
+                            <th>
+                                Attendance
+                            </th>
+                            <th>
+                                Check-in Time
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for registration in registrations %}
+                            <tr>
+                                <!-- Participant -->
+                                <td>
+                                    <div class="participant-cell">
+                                        <div class="participant-avatar">
+                                            {{ registration.participant.first_name|first|default:registration.participant.username|first|upper }}
+                                        </div>
+                                        <div>
+                                            <strong>
+                                                {{ registration.participant.get_full_name|default:registration.participant.username }}
+                                            </strong>
+                                            <small>
+                                                {{ registration.participant.email }}
+                                            </small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <!-- Event -->
+                                <td>
+                                    {{ registration.event.title }}
+                                </td>
+                                <!-- Registration -->
+                                <td>
+                                    {{ registration.created_at|date:"M d, Y" }}
+                                </td>
+                                <!-- Attendance -->
+                                <td>
+                                    {% if registration.attended %}
+                                        <span class="ticket-status attended">
+                                            ✓ Attended
+                                        </span>
+                                    {% else %}
+                                        <span class="ticket-status not-attended">
+                                            Absent
+                                        </span>
+                                    {% endif %}
+                                </td>
+                                <!-- Check-in -->
+                                <td>
+                                    {% if registration.checked_in_at %}
+                                        {{ registration.checked_in_at|date:"M d, Y H:i" }}
+                                    {% else %}
+                                        —
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="5">
+                                    <div class="empty-state">
+                                        <div class="empty-icon">
+                                            👥
+                                        </div>
+                                        <h3>
+                                            No Participant Records
+                                        </h3>
+                                        <p>
+                                            Participant attendance records
+                                            will appear here.
+                                        </p>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- Export -->
+        <div class="card">
+            <div class="section-title">
+                <h2>
+                    Export Report
+                </h2>
+                <p>
+                    Download your event attendance report.
+                </p>
+            </div>
+            <div class="quick-actions">
+                <a
+                    href="{% url 'export_report' %}?format=pdf{% if request.GET.event %}&event={{ request.GET.event }}{% endif %}"
+                    class="btn btn-primary">
+                    📄 Export PDF
+                </a>
+                <a
+                    href="{% url 'export_report' %}?format=csv{% if request.GET.event %}&event={{ request.GET.event }}{% endif %}"
+                    class="btn btn-secondary">
+                    📊 Export CSV
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

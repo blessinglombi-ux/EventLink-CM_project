@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+
+{% block title %}
+Contact | EventLink CM
+{% endblock %}
+
+
+{% block content %}
+
+<section class="page-header">
+
+    <div class="container">
+
+        <span class="eyebrow">
+            GET IN TOUCH
+        </span>
+
+        <h1>
+            We would love to hear from you.
+        </h1>
+
+        <p>
+            Have a question about EventLink CM?
+            Send us a message.
+        </p>
+
+    </div>
+
+</section>
+
+
+<section class="section">
+
+    <div class="container contact-grid">
+
+        <div class="contact-information">
+
+            <h2>
+                Contact EventLink
+            </h2>
+
+            <p>
+                For questions, feedback or
+                platform support, contact us.
+            </p>
+
+
+            <div class="contact-item">
+
+                <span>
+                    📧
+                </span>
+
+                <div>
+                    <small>Email</small>
+
+                    <strong>
+                        blessingakoni120@gmail.com
+                    </strong>
+                </div>
+
+            </div>
+
+
+            <div class="contact-item">
+
+                <span>
+                    🇨🇲
+                </span>
+
+                <div>
+                    <small>Location</small>
+
+                    <strong>
+                        Cameroon
+                    </strong>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <form class="contact-form"
+              id="contactForm">
+
+            <label>
+                Your name
+            </label>
+
+            <input type="text"
+                   name="name"
+                   placeholder="Enter your name"
+                   required>
+
+
+            <label>
+                Email address
+            </label>
+
+            <input type="email"
+                   name="email"
+                   placeholder="you@example.com"
+                   required>
+
+
+            <label>
+                Message
+            </label>
+
+            <textarea name="message"
+                      rows="6"
+                      placeholder="Write your message..."
+                      required></textarea>
+
+
+            <button class="btn btn-primary"
+                    type="submit">
+
+                Send Message
+
+            </button>
+
+
+            <p id="contactMessage"
+               class="form-message">
+            </p>
+
+        </form>
+
+    </div>
+
+</section>
+
+{% endblock %}

@@ -1,0 +1,310 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Notifications | EventLink CM{% endblock %}
+{% block content %}
+<section class="section">
+    <div class="container">
+        <!-- Page Header -->
+        <div class="dashboard-header">
+            <div>
+                <span class="eyebrow">
+                    PARTICIPANT
+                </span>
+                <h1>
+                    Notifications 🔔
+                </h1>
+                <p>
+                    Stay updated about your registrations,
+                    tickets and upcoming events.
+                </p>
+            </div>
+            <div>
+                <a
+                    href="{% url 'participant_dashboard' %}"
+                    class="btn btn-outline">
+                    ← Dashboard
+                </a>
+            </div>
+        </div>
+        <!-- Notification Statistics -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">
+                    Notifications
+                </div>
+                <div class="stat-number">
+                    {{ total_notifications|default:"0" }}
+                </div>
+                <p>
+                    Total notifications
+                </p>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">
+                    Unread
+                </div>
+                <div class="stat-number">
+                    {{ unread_notifications|default:"0" }}
+                </div>
+                <p>
+                    Notifications to read
+                </p>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">
+                    Event Updates
+                </div>
+                <div class="stat-number">
+                    {{ event_notifications|default:"0" }}
+                </div>
+                <p>
+                    Event-related updates
+                </p>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">
+                    Ticket Updates
+                </div>
+                <div class="stat-number">
+                    {{ ticket_notifications|default:"0" }}
+                </div>
+                <p>
+                    Ticket-related updates
+                </p>
+            </div>
+        </div>
+        <!-- Notification Controls -->
+        <div class="card">
+            <div class="section-title">
+                <h2>
+                    Notification Center
+                </h2>
+                <p>
+                    Manage the notifications in your account.
+                </p>
+            </div>
+            <div class="form-actions">
+                <form
+                    method="POST"
+                    action="{% url 'mark_all_notifications_read' %}">
+                    {% csrf_token %}
+                    <button
+                        type="submit"
+                        class="btn btn-primary">
+                        ✓ Mark All as Read
+                    </button>
+                </form>
+                <a
+                    href="{% url 'participant_notifications' %}"
+                    class="btn btn-outline">
+                    Refresh
+                </a>
+            </div>
+        </div>
+        <!-- Notifications List -->
+        <div class="card">
+            <div class="section-title">
+                <h2>
+                    Your Notifications
+                </h2>
+                <p>
+                    Important updates from EventLink CM.
+                </p>
+            </div>
+            {% if notifications %}
+                <div class="notification-list">
+                    {% for notification in notifications %}
+                        <article
+                            class="notification-item
+                            {% if not notification.is_read %}
+                                unread
+                            {% endif %}">
+                            <!-- Notification Icon -->
+                            <div class="notification-icon">
+                                {% if notification.notification_type == "registration" %}
+                                    🎟️
+                                {% elif notification.notification_type == "event" %}
+                                    📅
+                                {% elif notification.notification_type == "ticket" %}
+                                    🎫
+                                {% elif notification.notification_type == "reminder" %}
+                                    ⏰
+                                {% elif notification.notification_type == "attendance" %}
+                                    ✓
+                                {% else %}
+                                    🔔
+                                {% endif %}
+                            </div>
+                            <!-- Notification Content -->
+                            <div class="notification-content">
+                                <div class="notification-header">
+                                    <h3>
+                                        {{ notification.title }}
+                                    </h3>
+                                    {% if not notification.is_read %}
+                                        <span class="notification-badge">
+                                            New
+                                        </span>
+                                    {% endif %}
+                                </div>
+                                <p>
+                                    {{ notification.message }}
+                                </p>
+                                <small>
+                                    {{ notification.created_at|date:"M d, Y H:i" }}
+                                </small>
+                                {% if notification.event %}
+                                    <div class="notification-event">
+                                        <span>
+                                            📅
+                                        </span>
+                                        <strong>
+                                            {{ notification.event.title }}
+                                        </strong>
+                                    </div>
+                                {% endif %}
+                                <!-- Actions -->
+                                <div class="notification-actions">
+                                    {% if notification.event %}
+                                        <a
+                                            href="{% url 'participant_event_detail' notification.event.id %}"
+                                            class="btn btn-secondary">
+                                            View Event
+                                        </a>
+                                    {% endif %}
+                                    {% if notification.ticket %}
+                                        <a
+                                            href="{% url 'participant_ticket_detail' notification.ticket.id %}"
+                                            class="btn btn-secondary">
+                                            View Ticket
+                                        </a>
+                                    {% endif %}
+                                    {% if not notification.is_read %}
+                                        <form
+                                            method="POST"
+                                            action="{% url 'mark_notification_read' notification.id %}">
+                                            {% csrf_token %}
+                                            <button
+                                                type="submit"
+                                                class="btn btn-outline">
+                                                Mark as Read
+                                            </button>
+                                        </form>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </article>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <!-- Empty State -->
+                <div class="empty-state">
+                    <div class="empty-icon">
+                        🔔
+                    </div>
+                    <h2>
+                        No Notifications
+                    </h2>
+                    <p>
+                        You're all caught up! New event registrations,
+                        ticket confirmations and important updates
+                        will appear here.
+                    </p>
+                    <a
+                        href="{% url 'participant_events' %}"
+                        class="btn btn-primary">
+                        🔎 Explore Events
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+        <!-- Email Notifications -->
+        <div class="card">
+            <div class="section-title">
+                <span class="eyebrow">
+                    EMAIL
+                </span>
+                <h2>
+                    Email Notifications 📧
+                </h2>
+                <p>
+                    EventLink CM can send important account and
+                    event information to your registered email.
+                </p>
+            </div>
+            <div class="notification-email-info">
+                <div class="ticket-option">
+                    <span class="ticket-status valid">
+                        ✓
+                    </span>
+                    <div>
+                        <strong>
+                            Account Confirmation
+                        </strong>
+                        <span>
+                            Receive confirmation after creating
+                            your EventLink CM account.
+                        </span>
+                    </div>
+                </div>
+                <div class="ticket-option">
+                    <span class="ticket-status valid">
+                        ✓
+                    </span>
+                    <div>
+                        <strong>
+                            Event Registration
+                        </strong>
+                        <span>
+                            Receive confirmation when you register
+                            for an event.
+                        </span>
+                    </div>
+                </div>
+                <div class="ticket-option">
+                    <span class="ticket-status valid">
+                        ✓
+                    </span>
+                    <div>
+                        <strong>
+                            Event Reminders
+                        </strong>
+                        <span>
+                            Receive important reminders about
+                            registered events.
+                        </span>
+                    </div>
+                </div>
+                <div class="ticket-option">
+                    <span class="ticket-status valid">
+                        ✓
+                    </span>
+                    <div>
+                        <strong>
+                            Attendance Updates
+                        </strong>
+                        <span>
+                            Receive information related to your
+                            event attendance.
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Notification Tips -->
+        <div class="card">
+            <div class="notice-box">
+                <strong>
+                    💡 Stay Updated
+                </strong>
+                <p>
+                    Check your EventLink CM notification center
+                    regularly and make sure the email connected
+                    to your account is accessible so you don't
+                    miss important event information.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

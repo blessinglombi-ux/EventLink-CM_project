@@ -1,0 +1,179 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Organizer Dashboard | EventLink CM{% endblock %}
+{% block content %}
+<section class="section">
+    <div class="container">
+        <!-- Dashboard Header -->
+        <div class="dashboard-header">
+            <div>
+                <span class="eyebrow">ORGANIZER DASHBOARD</span>
+                <h1>
+                    Welcome back,
+                    {{ user.first_name|default:user.username }} 👋
+                </h1>
+                <p>
+                    Manage your events, participants and attendance
+                    from one simple dashboard.
+                </p>
+            </div>
+            <div>
+                <a href="{% url 'create_event' %}"
+                   class="btn btn-primary">
+                    + Create Event
+                </a>
+            </div>
+        </div>
+        <!-- Statistics -->
+        <div class="stats-grid">
+            <!-- Total Events -->
+            <div class="stat-card">
+                <div class="stat-label">
+                    Total Events
+                </div>
+                <div class="stat-number">
+                    {{ total_events|default:"0" }}
+                </div>
+                <p>
+                    Events you have created
+                </p>
+            </div>
+            <!-- Published Events -->
+            <div class="stat-card">
+                <div class="stat-label">
+                    Published Events
+                </div>
+                <div class="stat-number">
+                    {{ published_events|default:"0" }}
+                </div>
+                <p>
+                    Events visible to participants
+                </p>
+            </div>
+            <!-- Participants -->
+            <div class="stat-card">
+                <div class="stat-label">
+                    Participants
+                </div>
+                <div class="stat-number">
+                    {{ total_participants|default:"0" }}
+                </div>
+                <p>
+                    Total registrations
+                </p>
+            </div>
+            <!-- Attendance -->
+            <div class="stat-card">
+                <div class="stat-label">
+                    Attendance
+                </div>
+                <div class="stat-number">
+                    {{ total_attendance|default:"0" }}
+                </div>
+                <p>
+                    Participants checked in
+                </p>
+            </div>
+        </div>
+        <!-- Quick Actions -->
+        <div class="card">
+            <div class="section-title">
+                <h2>Quick Actions</h2>
+                <p>
+                    Quickly access the tools you need.
+                </p>
+            </div>
+            <div class="quick-actions">
+                <a href="{% url 'create_event' %}"
+                   class="btn btn-primary">
+                    + Create Event
+                </a>
+                <a href="{% url 'organizer_events' %}"
+                   class="btn btn-secondary">
+                    📅 My Events
+                </a>
+                <a href="{% url 'organizer_participants' %}"
+                   class="btn btn-outline">
+                    👥 Participants
+                </a>
+                <a href="{% url 'organizer_attendance' %}"
+                   class="btn btn-outline">
+                    ✓ Attendance
+                </a>
+                <a href="{% url 'organizer_reports' %}"
+                   class="btn btn-outline">
+                    📊 Reports
+                </a>
+            </div>
+        </div>
+        <!-- Recent Events -->
+        <div class="card">
+            <div class="section-title">
+                <h2>Recent Events</h2>
+                <p>
+                    Your latest created events.
+                </p>
+            </div>
+            {% if recent_events %}
+                {% for event in recent_events %}
+                    <div class="list-item">
+                        <div>
+                            <h3>
+                                {{ event.title }}
+                            </h3>
+                            <p>
+                                📅 {{ event.date }}
+                                &nbsp;&nbsp;•&nbsp;&nbsp;
+                                📍 {{ event.location }}
+                            </p>
+                        </div>
+                        <div>
+                            <a href="{% url 'edit_event' event.id %}"
+                               class="btn btn-secondary">
+                                Manage
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <!-- Empty State -->
+                <div class="empty-state">
+                    <div class="empty-icon">
+                        🎪
+                    </div>
+                    <h3>
+                        No Events Yet
+                    </h3>
+                    <p>
+                        You haven't created any events yet.
+                        Create your first event to get started.
+                    </p>
+                    <a href="{% url 'create_event' %}"
+                       class="btn btn-primary">
+                        Create Your First Event
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+        <!-- Organizer Information -->
+        <div class="card">
+            <div class="section-title">
+                <h2>Organizer Information</h2>
+                <p>
+                    Manage your organizer account.
+                </p>
+            </div>
+            <div class="quick-actions">
+                <a href="{% url 'organizer_profile' %}"
+                   class="btn btn-outline">
+                    👤 My Profile
+                </a>
+                <a href="{% url 'organizer_events' %}"
+                   class="btn btn-outline">
+                    📅 Manage Events
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

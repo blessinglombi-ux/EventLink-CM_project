@@ -1,0 +1,263 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}{{ event.title }} | EventLink CM{% endblock %}
+{% block content %}
+<section class="section">
+    <div class="container">
+        <!-- Back Button -->
+        <div class="page-back">
+            <a
+                href="{% url 'participant_events' %}"
+                class="btn btn-outline">
+                ← Back to Events
+            </a>
+        </div>
+        <!-- Event Hero -->
+        <div class="event-detail-hero">
+            <div class="event-detail-image">
+                {% if event.poster %}
+                    <img
+                        src="{{ event.poster.url }}"
+                        alt="{{ event.title }}">
+                {% else %}
+                    <div class="event-detail-placeholder">
+                        🎪
+                    </div>
+                {% endif %}
+            </div>
+            <div class="event-detail-content">
+                <!-- Category -->
+                <span class="event-category">
+                    {{ event.category|default:"Event" }}
+                </span>
+                <!-- Title -->
+                <h1>
+                    {{ event.title }}
+                </h1>
+                <!-- Description -->
+                <p class="event-detail-description">
+                    {{ event.description }}
+                </p>
+                <!-- Event Information -->
+                <div class="event-details-list">
+                    <div class="event-detail-item">
+                        <span class="detail-icon">
+                            📅
+                        </span>
+                        <div>
+                            <strong>
+                                Date
+                            </strong>
+                            <p>
+                                {{ event.date|date:"F d, Y" }}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="event-detail-item">
+                        <span class="detail-icon">
+                            🕐
+                        </span>
+                        <div>
+                            <strong>
+                                Time
+                            </strong>
+                            <p>
+                                {{ event.time }}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="event-detail-item">
+                        <span class="detail-icon">
+                            📍
+                        </span>
+                        <div>
+                            <strong>
+                                Location
+                            </strong>
+                            <p>
+                                {{ event.location }}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="event-detail-item">
+                        <span class="detail-icon">
+                            👥
+                        </span>
+                        <div>
+                            <strong>
+                                Registration
+                            </strong>
+                            <p>
+                                {% if event.capacity %}
+                                    {{ event.registered_count|default:"0" }}
+                                    /
+                                    {{ event.capacity }}
+                                    participants
+                                {% else %}
+                                    Registration available
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Ticket -->
+                <div class="ticket-option">
+                    <span class="ticket-status valid">
+                        🎟️ FREE
+                    </span>
+                    <span>
+                        No payment required
+                    </span>
+                </div>
+                <!-- Registration -->
+                <div class="event-registration">
+                    {% if is_registered %}
+                        <div class="registration-success">
+                            <div class="success-icon">
+                                ✓
+                            </div>
+                            <div>
+                                <h3>
+                                    You're Registered!
+                                </h3>
+                                <p>
+                                    Your free ticket is ready.
+                                    You can view it from your ticket dashboard.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <a
+                                href="{% url 'participant_tickets' %}"
+                                class="btn btn-primary">
+                                🎟️ View My Ticket
+                            </a>
+                        </div>
+                    {% elif event.is_published %}
+                        {% if event.capacity and event.registered_count >= event.capacity %}
+                            <div class="registration-warning">
+                                <strong>
+                                    Registration Full
+                                </strong>
+                                <p>
+                                    Unfortunately, all available
+                                    registration slots have been taken.
+                                </p>
+                            </div>
+                        {% else %}
+                            <form
+                                method="POST"
+                                action="{% url 'register_for_event' event.id %}">
+                                {% csrf_token %}
+                                <button
+                                    type="submit"
+                                    class="btn btn-primary btn-large">
+                                    🎟️ Register for Free
+                                </button>
+                            </form>
+                        {% endif %}
+                    {% else %}
+                        <div class="registration-warning">
+                            <strong>
+                                Registration Unavailable
+                            </strong>
+                            <p>
+                                This event is not currently available
+                                for registration.
+                            </p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <!-- Event Description -->
+        <div class="card">
+            <div class="section-title">
+                <span class="eyebrow">
+                    EVENT INFORMATION
+                </span>
+                <h2>
+                    About This Event
+                </h2>
+            </div>
+            <div class="event-long-description">
+                {{ event.description|linebreaks }}
+            </div>
+        </div>
+        <!-- Organizer Information -->
+        <div class="card">
+            <div class="section-title">
+                <span class="eyebrow">
+                    ORGANIZER
+                </span>
+                <h2>
+                    Event Organizer
+                </h2>
+            </div>
+            <div class="organizer-profile">
+                <div class="participant-avatar">
+                    {{ event.organizer.first_name|first|default:event.organizer.username|first|upper }}
+                </div>
+                <div>
+                    <h3>
+                        {{ event.organizer.get_full_name|default:event.organizer.username }}
+                    </h3>
+                    <p>
+                        Event Organizer on EventLink CM
+                    </p>
+                </div>
+            </div>
+        </div>
+        <!-- Registration Steps -->
+        <div class="card">
+            <div class="section-title">
+                <h2>
+                    🎟️ How Registration Works
+                </h2>
+                <p>
+                    Register for this event in three simple steps.
+                </p>
+            </div>
+            <div class="quick-actions">
+                <div class="ticket-option">
+                    <span class="ticket-status valid">
+                        1
+                    </span>
+                    <span>
+                        Click "Register for Free".
+                    </span>
+                </div>
+                <div class="ticket-option">
+                    <span class="ticket-status valid">
+                        2
+                    </span>
+                    <span>
+                        Your free ticket will be created automatically.
+                    </span>
+                </div>
+                <div class="ticket-option">
+                    <span class="ticket-status valid">
+                        3
+                    </span>
+                    <span>
+                        Show your ticket QR code when you arrive.
+                    </span>
+                </div>
+            </div>
+        </div>
+        <!-- Notice -->
+        <div class="card">
+            <div class="notice-box">
+                <strong>
+                    📧 EventLink CM Reminder
+                </strong>
+                <p>
+                    After successful registration, your account can
+                    receive event-related notifications and confirmation
+                    messages through your registered email address.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

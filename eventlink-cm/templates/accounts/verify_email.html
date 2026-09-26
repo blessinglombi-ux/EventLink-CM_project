@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block title %}
+Verify Email | EventLink CM
+{% endblock %}
+
+
+{% block content %}
+
+<section class="auth-page">
+
+    <div class="verification-card">
+
+        <div class="verification-icon">
+            ✉️
+        </div>
+
+        <h1>
+            Check your email
+        </h1>
+
+        <p>
+
+            We sent a verification link to
+            <strong>
+                your email address
+            </strong>.
+
+        </p>
+
+        <p>
+
+            Open the email and click the
+            verification button to activate
+            your EventLink CM account.
+
+        </p>
+
+
+        <div class="info-box">
+
+            📧
+
+            <span>
+                Didn't receive the email?
+                Check your spam folder.
+            </span>
+
+        </div>
+
+
+        <button class="btn btn-outline"
+                type="button"
+                id="resendVerification">
+
+            Resend Email
+
+        </button>
+
+
+        <p id="verificationMessage"
+           class="form-message">
+        </p>
+
+    </div>
+
+</section>
+
+{% endblock %}

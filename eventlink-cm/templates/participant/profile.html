@@ -1,0 +1,259 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}My Profile | EventLink CM{% endblock %}
+{% block content %}
+<section class="section">
+    <div class="container">
+        <!-- Page Header -->
+        <div class="section-title">
+            <span class="eyebrow">
+                PARTICIPANT
+            </span>
+            <h1>
+                My Profile
+            </h1>
+            <p>
+                Manage your personal information and EventLink CM account.
+            </p>
+        </div>
+        <!-- Profile Card -->
+        <div class="card">
+            <form method="POST">
+                {% csrf_token %}
+                <!-- Profile Header -->
+                <div class="profile-header">
+                    <div class="profile-avatar">
+                        {% if user.profile_picture %}
+                            <img
+                                src="{{ user.profile_picture.url }}"
+                                alt="Profile picture">
+                        {% else %}
+                            <span>
+                                {{ user.first_name|first|default:user.username|first|upper }}
+                            </span>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <h2>
+                            {{ user.get_full_name|default:user.username }}
+                        </h2>
+                        <p>
+                            EventLink CM Participant
+                        </p>
+                    </div>
+                </div>
+                <!-- Personal Information -->
+                <div class="section-title">
+                    <h2>
+                        Personal Information
+                    </h2>
+                    <p>
+                        Keep your information up to date.
+                    </p>
+                </div>
+                <!-- First and Last Name -->
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="first_name">
+                            First Name
+                        </label>
+                        <input
+                            type="text"
+                            id="first_name"
+                            name="first_name"
+                            class="form-control"
+                            value="{{ user.first_name }}"
+                            placeholder="Enter your first name"
+                            required>
+                    </div>
+                    <div class="form-group">
+                        <label for="last_name">
+                            Last Name
+                        </label>
+                        <input
+                            type="text"
+                            id="last_name"
+                            name="last_name"
+                            class="form-control"
+                            value="{{ user.last_name }}"
+                            placeholder="Enter your last name"
+                            required>
+                    </div>
+                </div>
+                <!-- Username -->
+                <div class="form-group">
+                    <label for="username">
+                        Username
+                    </label>
+                    <input
+                        type="text"
+                        id="username"
+                        class="form-control"
+                        value="{{ user.username }}"
+                        disabled>
+                    <small>
+                        Your username cannot be changed from this page.
+                    </small>
+                </div>
+                <!-- Email -->
+                <div class="form-group">
+                    <label for="email">
+                        Email Address
+                    </label>
+                    <input
+                        type="email"
+                        id="email"
+                        class="form-control"
+                        value="{{ user.email }}"
+                        disabled>
+                    <small>
+                        Your verified email address is used for
+                        EventLink CM notifications and confirmations.
+                    </small>
+                </div>
+                <!-- Phone -->
+                <div class="form-group">
+                    <label for="phone">
+                        Phone Number
+                    </label>
+                    <input
+                        type="tel"
+                        id="phone"
+                        name="phone"
+                        class="form-control"
+                        value="{{ profile.phone|default:'' }}"
+                        placeholder="+237 ...">
+                </div>
+                <!-- Location -->
+                <div class="form-group">
+                    <label for="location">
+                        Location
+                    </label>
+                    <input
+                        type="text"
+                        id="location"
+                        name="location"
+                        class="form-control"
+                        value="{{ profile.location|default:'' }}"
+                        placeholder="Example: Yaoundé, Cameroon">
+                </div>
+                <!-- About -->
+                <div class="form-group">
+                    <label for="bio">
+                        About Me
+                    </label>
+                    <textarea
+                        id="bio"
+                        name="bio"
+                        class="form-control"
+                        rows="5"
+                        maxlength="1000"
+                        placeholder="Tell organizers a little about yourself...">{{ profile.bio|default:'' }}</textarea>
+                </div>
+                <!-- Save Buttons -->
+                <div class="form-actions">
+                    <button
+                        type="submit"
+                        class="btn btn-primary">
+                        Save Changes
+                    </button>
+                    <a
+                        href="{% url 'participant_dashboard' %}"
+                        class="btn btn-outline">
+                        Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+        <!-- Account Information -->
+        <div class="card">
+            <div class="section-title">
+                <h2>
+                    Account Information
+                </h2>
+                <p>
+                    Information about your EventLink CM account.
+                </p>
+            </div>
+            <div class="profile-info-list">
+                <!-- Account Type -->
+                <div class="list-item">
+                    <div>
+                        <strong>
+                            Account Type
+                        </strong>
+                        <p>
+                            Your role on EventLink CM.
+                        </p>
+                    </div>
+                    <span>
+                        Participant
+                    </span>
+                </div>
+                <!-- Email Status -->
+                <div class="list-item">
+                    <div>
+                        <strong>
+                            Email Status
+                        </strong>
+                        <p>
+                            Status of your account email.
+                        </p>
+                    </div>
+                    {% if user.is_active %}
+                        <span class="ticket-status attended">
+                            ✓ Active
+                        </span>
+                    {% else %}
+                        <span class="ticket-status not-attended">
+                            Inactive
+                        </span>
+                    {% endif %}
+                </div>
+                <!-- Member Since -->
+                <div class="list-item">
+                    <div>
+                        <strong>
+                            Member Since
+                        </strong>
+                        <p>
+                            Date you joined EventLink CM.
+                        </p>
+                    </div>
+                    <span>
+                        {{ user.date_joined|date:"M d, Y" }}
+                    </span>
+                </div>
+            </div>
+        </div>
+        <!-- Account Help -->
+        <div class="card">
+            <div class="section-title">
+                <h2>
+                    Account Help
+                </h2>
+                <p>
+                    Need to manage your account?
+                </p>
+            </div>
+            <div class="quick-actions">
+                <a
+                    href="{% url 'participant_notifications' %}"
+                    class="btn btn-outline">
+                    🔔 Notifications
+                </a>
+                <a
+                    href="{% url 'participant_tickets' %}"
+                    class="btn btn-outline">
+                    🎟️ My Tickets
+                </a>
+                <a
+                    href="{% url 'participant_events' %}"
+                    class="btn btn-primary">
+                    🔎 Explore Events
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

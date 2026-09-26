@@ -1,0 +1,349 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}My Tickets | EventLink CM{% endblock %}
+{% block content %}
+<section class="section">
+    <div class="container">
+        <!-- Page Header -->
+        <div class="dashboard-header">
+            <div>
+                <span class="eyebrow">
+                    PARTICIPANT
+                </span>
+                <h1>
+                    My Tickets 🎟️
+                </h1>
+                <p>
+                    View your event tickets and keep them ready
+                    for check-in.
+                </p>
+            </div>
+            <div>
+                <a
+                    href="{% url 'participant_events' %}"
+                    class="btn btn-primary">
+                    🔎 Explore Events
+                </a>
+            </div>
+        </div>
+        <!-- Ticket Statistics -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">
+                    Total Tickets
+                </div>
+                <div class="stat-number">
+                    {{ total_tickets|default:"0" }}
+                </div>
+                <p>
+                    Tickets in your account
+                </p>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">
+                    Upcoming
+                </div>
+                <div class="stat-number">
+                    {{ upcoming_tickets|default:"0" }}
+                </div>
+                <p>
+                    Upcoming events
+                </p>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">
+                    Attended
+                </div>
+                <div class="stat-number">
+                    {{ attended_tickets|default:"0" }}
+                </div>
+                <p>
+                    Tickets used
+                </p>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">
+                    Available
+                </div>
+                <div class="stat-number">
+                    {{ available_tickets|default:"0" }}
+                </div>
+                <p>
+                    Tickets ready for use
+                </p>
+            </div>
+        </div>
+        <!-- Ticket Filter -->
+        <div class="card">
+            <div class="section-title">
+                <h2>
+                    Find a Ticket
+                </h2>
+                <p>
+                    Filter your tickets by their current status.
+                </p>
+            </div>
+            <form method="GET">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="status">
+                            Ticket Status
+                        </label>
+                        <select
+                            id="status"
+                            name="status"
+                            class="form-control">
+                            <option value="">
+                                All Tickets
+                            </option>
+                            <option
+                                value="valid"
+                                {% if request.GET.status == "valid" %}
+                                    selected
+                                {% endif %}>
+                                Valid
+                            </option>
+                            <option
+                                value="attended"
+                                {% if request.GET.status == "attended" %}
+                                    selected
+                                {% endif %}>
+                                Attended
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="search">
+                            Search Event
+                        </label>
+                        <input
+                            type="search"
+                            id="search"
+                            name="search"
+                            class="form-control"
+                            value="{{ request.GET.search }}"
+                            placeholder="Search by event name...">
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button
+                        type="submit"
+                        class="btn btn-primary">
+                        🔍 Search
+                    </button>
+                    <a
+                        href="{% url 'participant_tickets' %}"
+                        class="btn btn-outline">
+                        Clear
+                    </a>
+                </div>
+            </form>
+        </div>
+        <!-- Tickets -->
+        <div class="section-title">
+            <h2>
+                Your Tickets
+            </h2>
+            <p>
+                Keep your QR code ready when attending an event.
+            </p>
+        </div>
+        {% if tickets %}
+            <div class="ticket-grid">
+                {% for ticket in tickets %}
+                    <article class="ticket-card">
+                        <!-- Ticket Header -->
+                        <div class="ticket-card-header">
+                            <div>
+                                <span class="event-category">
+                                    {{ ticket.event.category|default:"Event" }}
+                                </span>
+                                <h2>
+                                    {{ ticket.event.title }}
+                                </h2>
+                            </div>
+                            {% if ticket.attended %}
+                                <span class="ticket-status attended">
+                                    ✓ Attended
+                                </span>
+                            {% else %}
+                                <span class="ticket-status valid">
+                                    ✓ Valid
+                                </span>
+                            {% endif %}
+                        </div>
+                        <!-- Ticket Information -->
+                        <div class="ticket-card-body">
+                            <!-- Event Date -->
+                            <div class="ticket-info-row">
+                                <span>
+                                    📅
+                                </span>
+                                <div>
+                                    <strong>
+                                        Date
+                                    </strong>
+                                    <p>
+                                        {{ ticket.event.date|date:"F d, Y" }}
+                                    </p>
+                                </div>
+                            </div>
+                            <!-- Event Time -->
+                            <div class="ticket-info-row">
+                                <span>
+                                    🕐
+                                </span>
+                                <div>
+                                    <strong>
+                                        Time
+                                    </strong>
+                                    <p>
+                                        {{ ticket.event.time }}
+                                    </p>
+                                </div>
+                            </div>
+                            <!-- Location -->
+                            <div class="ticket-info-row">
+                                <span>
+                                    📍
+                                </span>
+                                <div>
+                                    <strong>
+                                        Location
+                                    </strong>
+                                    <p>
+                                        {{ ticket.event.location }}
+                                    </p>
+                                </div>
+                            </div>
+                            <!-- Ticket Code -->
+                            <div class="ticket-info-row">
+                                <span>
+                                    🎟️
+                                </span>
+                                <div>
+                                    <strong>
+                                        Ticket Code
+                                    </strong>
+                                    <p class="ticket-code">
+                                        {{ ticket.code }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- QR Preview -->
+                        <div class="ticket-qr">
+                            {% if ticket.qr_code %}
+                                <img
+                                    src="{{ ticket.qr_code.url }}"
+                                    alt="QR code for {{ ticket.event.title }}">
+                            {% else %}
+                                <div class="qr-placeholder">
+                                    <span>
+                                        ▦
+                                    </span>
+                                    <small>
+                                        QR code
+                                    </small>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <!-- Ticket Footer -->
+                        <div class="ticket-card-footer">
+                            <small>
+                                Issued:
+                                {{ ticket.created_at|date:"M d, Y" }}
+                            </small>
+                            <a
+                                href="{% url 'participant_ticket_detail' ticket.id %}"
+                                class="btn btn-primary">
+                                View Ticket
+                            </a>
+                        </div>
+                    </article>
+                {% endfor %}
+            </div>
+        {% else %}
+            <!-- Empty State -->
+            <div class="card">
+                <div class="empty-state">
+                    <div class="empty-icon">
+                        🎟️
+                    </div>
+                    <h2>
+                        No Tickets Yet
+                    </h2>
+                    <p>
+                        You don't have any event tickets yet.
+                        Explore available events and register for
+                        one to receive your free ticket.
+                    </p>
+                    <a
+                        href="{% url 'participant_events' %}"
+                        class="btn btn-primary">
+                        🔎 Find an Event
+                    </a>
+                </div>
+            </div>
+        {% endif %}
+        <!-- Ticket Instructions -->
+        <div class="card">
+            <div class="section-title">
+                <h2>
+                    🎫 Using Your Ticket
+                </h2>
+                <p>
+                    Follow these simple steps when attending an event.
+                </p>
+            </div>
+            <div class="quick-actions">
+                <div class="ticket-option">
+                    <span class="ticket-status valid">
+                        1
+                    </span>
+                    <span>
+                        Open your ticket before arriving.
+                    </span>
+                </div>
+                <div class="ticket-option">
+                    <span class="ticket-status valid">
+                        2
+                    </span>
+                    <span>
+                        Show the QR code to the event organizer.
+                    </span>
+                </div>
+                <div class="ticket-option">
+                    <span class="ticket-status valid">
+                        3
+                    </span>
+                    <span>
+                        The organizer scans your ticket.
+                    </span>
+                </div>
+                <div class="ticket-option">
+                    <span class="ticket-status attended">
+                        ✓
+                    </span>
+                    <span>
+                        Your attendance is recorded automatically.
+                    </span>
+                </div>
+            </div>
+        </div>
+        <!-- EventLink Notice -->
+        <div class="card">
+            <div class="notice-box">
+                <strong>
+                    📧 EventLink CM
+                </strong>
+                <p>
+                    Keep the email address connected to your account
+                    active so you can receive event registration
+                    confirmations and important notifications.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
